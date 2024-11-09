@@ -9,8 +9,8 @@
 
 ### Database Schema (Up to date):
 
-
-Milestone 1: Early prototype. Give a 10-15 minute demo during the lab on November 11th.
+### Milestone 1:
+Early prototype. Give a 10-15 minute demo during the lab on November 11th.
 For this milestone we are looking to see enough functionality to get a feel for the system and how it will
 work. One important use case should be operational. It should collect data from the back end, do
 something with it and display the result. The display doesn't need to be fancy. There should be a GitHub
