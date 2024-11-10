@@ -7,6 +7,8 @@ public class Main {
     private static Scanner scanner = new Scanner(System.in);
     private static User currentUser = null;
 
+    private static PerkManager perkManager = new PerkManager();
+
     public static void main(String[] args) {
         while (true) {
             System.out.println("Do you have an account? [y/n]:");
@@ -84,5 +86,16 @@ public class Main {
         currentUser = null;
     }
 
+    private static void uploadPerk()
+    {
+        System.out.print("Enter perk name: ");
+        String perkName = scanner.nextLine();
+
+    }
+
+    private static void viewPerk()
+    {
+
+    }
 
 }
