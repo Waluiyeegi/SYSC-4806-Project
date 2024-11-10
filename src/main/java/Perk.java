@@ -6,6 +6,7 @@ public class Perk {
     private List<Restriction> restrictions;
     private int upvotes;
     private int downvotes;
+    private int code;
     //expiry date
     //private User postedBy;
 
@@ -15,9 +16,10 @@ public class Perk {
         downvotes = 0;
     }
 
-    public Perk(String name, List<Restriction> restrictions){
+    public Perk(String name, List<Restriction> restrictions, int code){
         this.name = name;
         restrictions = new ArrayList<>(restrictions);
+        this.code = code;
         upvotes = 0;
         downvotes = 0;
     }
@@ -45,6 +47,8 @@ public class Perk {
     public String getName (){
         return name;
     }
+
+    public int getCode() {return code;}
 
     public List<Restriction> getRestrictinos(){
         return restrictions;
