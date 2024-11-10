@@ -67,7 +67,7 @@ public class Main {
             switch (choice) {
                 case "1":
                     System.out.print("Upload test");
-                    //uploadPerk();
+                    uploadPerk();
                     break;
                 case "2":
                     System.out.print("View test");
@@ -90,6 +90,20 @@ public class Main {
     {
         System.out.print("Enter perk name: ");
         String perkName = scanner.nextLine();
+
+        System.out.print("Enter perk code: ");
+        String codeInput = scanner.nextLine();
+
+        int perkCode = 0;
+        try {
+            perkCode = Integer.parseInt(codeInput);
+        }
+        catch (NumberFormatException e) {
+            System.out.println("Invalid Code: error with string");
+        }
+
+        Perk newPerk = new Perk(perkName, null, perkCode);
+        perkManager.addPerk(newPerk);
 
     }
 

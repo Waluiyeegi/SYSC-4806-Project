@@ -18,7 +18,15 @@ public class Perk {
 
     public Perk(String name, List<Restriction> restrictions, int code){
         this.name = name;
-        restrictions = new ArrayList<>(restrictions);
+
+        if(restrictions == null)
+        {
+            this.restrictions = new ArrayList<>();
+        }
+        else
+        {
+            this.restrictions = new ArrayList<>(restrictions);
+        }
         this.code = code;
         upvotes = 0;
         downvotes = 0;
