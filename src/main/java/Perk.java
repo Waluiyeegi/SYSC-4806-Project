@@ -71,13 +71,13 @@ public class Perk {
     }
 
     public String toString(){
-        String str = "Name: " + getName() + " ";
+        String str = "Name: " + getName() + "\n";
         for(Restriction restriction : restrictions){
-            str += restriction.toString() + " ";
+            str += restriction.toString() + "\n";
         }
-        str += "Upvotes: " + upvotes + " ";
-        str += "Downvotes: " + downvotes + " ";
-        str += "Code: " + code;
+        str += "Upvotes: " + upvotes + "\n";
+        str += "Downvotes: " + downvotes + "\n";
+        str += "Code: " + code + "\n";
         return str;
     }
 }
