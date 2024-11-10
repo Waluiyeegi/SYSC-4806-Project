@@ -61,4 +61,15 @@ public class Perk {
     public int getDownvotes (){
         return downvotes;
     }
+
+    public String toString(){
+        String str = "Name: " + getName() + " ";
+        for(Restriction restriction : restrictions){
+            str += restriction.toString() + " ";
+        }
+        str += "Upvotes: " + upvotes + " ";
+        str += "Downvotes: " + downvotes + " ";
+        str += "Code: " + code;
+        return str;
+    }
 }
