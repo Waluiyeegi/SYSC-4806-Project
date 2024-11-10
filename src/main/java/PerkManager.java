@@ -26,9 +26,8 @@ public class PerkManager {
     {
         String out = "";
         for (Perk p : perks) {
-            out += p.toString() + "/n";
+            out += p.toString() + "" + "\n";
         }
         return out;
     }
-
 }
