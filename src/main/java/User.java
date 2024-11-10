@@ -57,4 +57,12 @@ public class User {
     public List<Perk> getPerkposts (){
         return perksPosted;
     }
+
+    public String toString(){
+        String str = "";
+        for (Perk perk : perksPosted){
+            str += perk.toString() + "\n";
+        }
+        return str;
+    }
 }
