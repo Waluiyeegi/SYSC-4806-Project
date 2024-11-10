@@ -71,7 +71,7 @@ public class Main {
                     break;
                 case "2":
                     System.out.print("View test");
-                    //viewPerks();
+                    System.out.println(perkManager.perksToString());
                     break;
                 case "3":
                     logout();
