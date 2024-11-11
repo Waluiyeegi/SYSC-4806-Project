@@ -3,6 +3,9 @@ import java.util.List;
 
 public class Perk {
     private String name;
+    private Membership membership;
+    private Product product;
+
     private List<Restriction> restrictions;
     private int upvotes;
     private int downvotes;
@@ -16,20 +19,15 @@ public class Perk {
         downvotes = 0;
     }
 
-    public Perk(String name, List<Restriction> restrictions, int code){
+    public Perk(String name, List<Restriction> restrictions, int code, Product product, Membership membership){
         this.name = name;
-
-        if(restrictions == null)
-        {
-            this.restrictions = new ArrayList<>();
-        }
-        else
-        {
-            this.restrictions = new ArrayList<>(restrictions);
-        }
+        this.restrictions = new ArrayList<>(restrictions);
         this.code = code;
         upvotes = 0;
         downvotes = 0;
+
+        this.product = product;
+        this.membership = membership;
     }
 
     public void setName(String name){
@@ -77,7 +75,7 @@ public class Perk {
         }
         str += "Upvotes: " + upvotes + "\n";
         str += "Downvotes: " + downvotes + "\n";
-        str += "Code: " + code + "\n";
+        str += "Code: " + code + "\n ------- \n";
         return str;
     }
 }
