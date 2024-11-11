@@ -4,6 +4,7 @@
 ### Group members: Triton Crowley, Jason Zhang, Caleb Lui-yee, Nitin Alagu, Nick Yung
 
 ### Current State (as per Kanban):
+In the current state there is a console application where you can create an account (or login), then you have the option to upload a perk, display perks, or logout of your account. Upon uploading a new perk the application will ask for the information, then use the enterd information to store the perk object in the perkMangager.  
 
 ### Plan for next sprint:
 
@@ -19,6 +20,18 @@ the pom.xml should provide us with a ready-to-run JAR file.
 We will also inspect the README file, the Issues, the Kanban, the code reviews, the tests, and we will
 verify that everybody is participating in all aspects of the project (if that is not the case, different team
 members will end up with different grades).
+
+### Triton Crowley
+**What have I done this week?**
+This week I made the Perk Manager class and the Product class. 
+I have made adjustments to Main.c --> added code to get product and membership information and store in perk. 
+Addutionally I have made minor changes to the remaining classes to ensure they function along side the additions I made to Main.c
+
+**What will I do next week?**
+Next week I plan to implement the controllers that will be needed to handle GET and POST request
+**What is holding me back?**
+N/A
+
 
 ### Caleb Lui-Yee
 Created Github Repository, Enabled CI and made sure it was up and running in production on Azure
