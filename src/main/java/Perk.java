@@ -2,7 +2,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Perk {
+
+    private int id;
     private String name;
+    private String value;
     private Membership membership;
     private Product product;
 
@@ -19,8 +22,8 @@ public class Perk {
         downvotes = 0;
     }
 
-    public Perk(String name, List<Restriction> restrictions, int code, Product product, Membership membership){
-        this.name = name;
+    public Perk(String value, List<Restriction> restrictions, int code, Product product, Membership membership){
+        name = value + " " + product.getName() + " with " + membership.getName();
         this.restrictions = new ArrayList<>(restrictions);
         this.code = code;
         upvotes = 0;
