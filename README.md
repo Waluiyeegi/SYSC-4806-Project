@@ -19,3 +19,9 @@ the pom.xml should provide us with a ready-to-run JAR file.
 We will also inspect the README file, the Issues, the Kanban, the code reviews, the tests, and we will
 verify that everybody is participating in all aspects of the project (if that is not the case, different team
 members will end up with different grades).
+
+### Caleb Lui-Yee
+Created Github Repository, Enabled CI and made sure it was up and running in production on Azure
+Created Member, Perk, and User Repositories
+Worked a little bit on user and perk
+Worked on viewing your perks on main
