@@ -66,11 +66,11 @@ public class Main {
 
             switch (choice) {
                 case "1":
-                    System.out.print("Upload was selected");
+                    System.out.println("-----Upload was selected-----\n");
                     uploadPerk();
                     break;
                 case "2":
-                    System.out.print("View was selected");
+                    System.out.println("-----View was selected-----n\n");
                     System.out.println(perkManager.perksToString());
                     break;
                 case "3":
@@ -88,8 +88,14 @@ public class Main {
 
     private static void uploadPerk()
     {
-        System.out.print("Enter perk name: ");
-        String perkName = scanner.nextLine();
+        System.out.print("Enter perk value (ex: 10% off): ");
+        String perkValue = scanner.nextLine();
+
+        System.out.println("*Please enter membership information*");
+        Membership membership = generateMembership();
+
+        System.out.println("*Please enter product information for which the perk applies*");
+        Product product = generateProduct();
 
         System.out.print("Enter perk code: ");
         String codeInput = scanner.nextLine();
@@ -102,13 +108,7 @@ public class Main {
             System.out.println("Invalid Code: error with string");
         }
 
-        System.out.println("*Please enter membership information*");
-        Membership membership = generateMembership();
-
-        System.out.println("*Please enter product information for which the perk applies*");
-        Product product = generateProduct();
-
-        Perk newPerk = new Perk(perkName, new ArrayList<>(), perkCode, product, membership);
+        Perk newPerk = new Perk(perkValue, new ArrayList<>(), perkCode, product, membership);
         perkManager.addPerk(newPerk);
 
     }
