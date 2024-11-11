@@ -29,6 +29,7 @@ Addutionally I have made minor changes to the remaining classes to ensure they f
 
 **What will I do next week?**
 Next week I plan to implement the controllers that will be needed to handle GET and POST request
+
 **What is holding me back?**
 N/A
 
