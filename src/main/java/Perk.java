@@ -59,7 +59,7 @@ public class Perk {
 
     public int getCode() {return code;}
 
-    public List<Restriction> getRestrictinos(){
+    public List<Restriction> getRestrictions(){
         return restrictions;
     }
 
