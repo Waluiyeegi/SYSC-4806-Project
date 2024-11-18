@@ -35,7 +35,7 @@ public class Main {
         String password = scanner.nextLine();
 
         for (User user : users) {
-            if (user.getUserName().equals(username) && user.authenticate(password)) {
+            if (user.getUsername().equals(username) && user.authenticate(password)) {
                 currentUser = user;
                 System.out.println("Logged in successfully.");
                 return;
@@ -51,7 +51,7 @@ public class Main {
         String password = scanner.nextLine();
 
         User newUser = new User();
-        newUser.setUserName(username);
+        newUser.setUsername(username);
         newUser.setPassword(password);
         users.add(newUser);
         currentUser = newUser;
