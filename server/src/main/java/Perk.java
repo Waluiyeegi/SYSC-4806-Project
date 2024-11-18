@@ -2,10 +2,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Perk {
+
+    private int id;
     private String name;
+    private String value;
+    private Membership membership;
+    private Product product;
+
     private List<Restriction> restrictions;
     private int upvotes;
     private int downvotes;
+    private int code;
     //expiry date
     //private User postedBy;
 
@@ -15,11 +22,15 @@ public class Perk {
         downvotes = 0;
     }
 
-    public Perk(String name, List<Restriction> restrictions){
-        this.name = name;
-        restrictions = new ArrayList<>(restrictions);
+    public Perk(String value, List<Restriction> restrictions, int code, Product product, Membership membership){
+        name = value + " " + product.getName() + " with " + membership.getName();
+        this.restrictions = new ArrayList<>(restrictions);
+        this.code = code;
         upvotes = 0;
         downvotes = 0;
+
+        this.product = product;
+        this.membership = membership;
     }
 
     public void setName(String name){
@@ -46,7 +57,9 @@ public class Perk {
         return name;
     }
 
-    public List<Restriction> getRestrictinos(){
+    public int getCode() {return code;}
+
+    public List<Restriction> getRestrictions(){
         return restrictions;
     }
 
@@ -56,5 +69,16 @@ public class Perk {
 
     public int getDownvotes (){
         return downvotes;
+    }
+
+    public String toString(){
+        String str = "Name: " + getName() + "\n";
+        for(Restriction restriction : restrictions){
+            str += restriction.toString() + "\n";
+        }
+        str += "Upvotes: " + upvotes + "\n";
+        str += "Downvotes: " + downvotes + "\n";
+        str += "Code: " + code + "\n ------- \n";
+        return str;
     }
 }
