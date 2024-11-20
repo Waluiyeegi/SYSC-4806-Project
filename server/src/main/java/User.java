@@ -1,13 +1,13 @@
+
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.event.ListDataEvent;
 
 public class User {
 
     private String userName;
     private String password;
     private List<Perk> perksPosted;
+
     private List<Membership> memberships;
 
     public User() {
