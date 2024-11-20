@@ -1,15 +1,10 @@
 <script>
-    import { onMount } from 'svelte';
+    export let perk;
 
     export let buttonText = 'View Perk';
 
-    let text = 'Perk Loading...';
+    let text = perk.name;
 
-    onMount(async () => {
-        const response = await fetch('/api/dynamic-text');
-        const data = await response.text();
-        text = data;
-    });
 </script>
 
 <div class="fancy-box">
