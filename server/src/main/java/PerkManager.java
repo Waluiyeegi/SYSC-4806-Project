@@ -1,33 +1,37 @@
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 
+@Service
 public class PerkManager {
 
-    private List<Perk> perks = new ArrayList<>();
+    @Autowired
+    private PerkRepository perkRepository;
 
     public PerkManager()
     {
 
     }
 
-    public void addPerk(Perk perk)
-    {
-        perks.add(perk);
+    public List<Perk> getPerks(){
+        return (List<Perk>) perkRepository.findAll();
     }
 
-    public void removePerk(String name)
-    {
-        Predicate<Perk> nameMatch = n -> n.getName().equals(name);
-        perks.removeIf(nameMatch);
+    public Perk savePerk(Perk perk){
+        return perkRepository.save(perk);
     }
 
-    public String perksToString()
-    {
-        String out = "";
-        for (Perk p : perks) {
-            out += p.toString() + "" + "\n";
+    public Perk getPerkByID(int id){
+        Optional<Perk> perkOptional = perkRepository.findById(id);
+        if (perkOptional.isPresent()) {
+            return perkOptional.get();
+        } else {
+            throw new RuntimeException("Perk[" + id + "] not found");
         }
-        return out;
+
     }
 }

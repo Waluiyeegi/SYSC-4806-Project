@@ -1,8 +1,13 @@
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Perk {
 
+    @Id
     private int id;
     private String name;
     private String value;
