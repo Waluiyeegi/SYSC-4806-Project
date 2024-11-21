@@ -8,6 +8,7 @@ import java.util.List;
 @RequestMapping("/api/perks")
 @CrossOrigin(origins = "http://localhost:5173")
 public class PerkManagerController {
+
     @Autowired
     private PerkManager perkManager;
 
