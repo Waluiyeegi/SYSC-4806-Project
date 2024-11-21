@@ -11,7 +11,7 @@
     <div class="text-container">
         <p>{text}</p>
     </div>
-    <button class="fancy-button">{buttonText}</button>
+    <a href={`/perk/${perk.id}`} class="fancy-button">{buttonText}</a>
 </div>
 
 <style>
