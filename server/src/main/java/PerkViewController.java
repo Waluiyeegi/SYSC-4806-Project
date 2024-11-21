@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/perks")
+@RequestMapping("/perk")
 public class PerkViewController {
 
     @Autowired
@@ -14,6 +14,6 @@ public class PerkViewController {
     // Endpoint to get perk details by ID
     @GetMapping("/{id}")
     public Perk getPerkById(@PathVariable Integer id) {
-        return perkManager.getPerkById(id);
+        return perkManager.getPerkByID(id);
     }
 }
