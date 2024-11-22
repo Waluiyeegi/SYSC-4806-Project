@@ -35,7 +35,7 @@ public class Main {
         String password = scanner.nextLine();
 
         for (User user : users) {
-            if (user.getUserName().equals(username) && user.authenticate(password)) {
+            if (user.getUsername().equals(username) && user.authenticate(password)) {
                 currentUser = user;
                 System.out.println("Logged in successfully.");
                 return;
@@ -51,7 +51,7 @@ public class Main {
         String password = scanner.nextLine();
 
         User newUser = new User();
-        newUser.setUserName(username);
+        newUser.setUsername(username);
         newUser.setPassword(password);
         users.add(newUser);
         currentUser = newUser;
@@ -71,7 +71,7 @@ public class Main {
                     break;
                 case "2":
                     System.out.println("-----View was selected-----n\n");
-                    System.out.println(perkManager.perksToString());
+                    System.out.println(perkManager.toString());
                     break;
                 case "3":
                     logout();
@@ -109,7 +109,7 @@ public class Main {
         }
 
         Perk newPerk = new Perk(perkValue, new ArrayList<>(), perkCode, product, membership);
-        perkManager.addPerk(newPerk);
+        //perkManager.addPerk(newPerk);
 
     }
 
