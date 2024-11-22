@@ -1,4 +1,6 @@
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Optional;
 
 
@@ -22,8 +24,21 @@ public class UserService {
 
     public User loginUser(String username, String password) {
         return userRepository.findByUsername(username)
-                .filter(user -> user.getPassword().equals(password)) // Match password (hash in production)
+                .filter(user -> user.authenticate(password)) // Matches hashed password
                 .orElseThrow(() -> new RuntimeException("Invalid username or password"));
     }
+
+    public User updateUserProfile(String username, List<String> memberships) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.getMemberships().clear();
+        for (String membershipName : memberships) {
+            Membership membership = new Membership();
+            membership.setName(membershipName);
+            user.addMembership(membership);
+        }
+        return userRepository.save(user);
+    }
+
 }
 

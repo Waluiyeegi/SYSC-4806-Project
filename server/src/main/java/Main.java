@@ -71,7 +71,7 @@ public class Main {
                     break;
                 case "2":
                     System.out.println("-----View was selected-----n\n");
-                    System.out.println(perkManager.perksToString());
+                    System.out.println(perkManager.toString());
                     break;
                 case "3":
                     logout();
@@ -109,7 +109,7 @@ public class Main {
         }
 
         Perk newPerk = new Perk(perkValue, new ArrayList<>(), perkCode, product, membership);
-        perkManager.addPerk(newPerk);
+        //perkManager.addPerk(newPerk);
 
     }
 

@@ -57,6 +57,10 @@ public class User {
         memberships.add(membership);
     }
 
+    public List<Membership> getMemberships() {
+        return memberships;
+    }
+
     public void addVote (Perk perk){
         perks.add(perk);
     }
