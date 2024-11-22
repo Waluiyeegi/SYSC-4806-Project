@@ -1,29 +1,48 @@
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class User {
 
-    private String userName;
-    private String password;
-    private List<Perk> perksPosted;
+    @Id
+    @GeneratedValue
+    private Long id;
 
+    @Column(unique = true, nullable = false)
+    private String username;
+
+    @Column(nullable = false)
+    private String password;
+    @OneToMany(mappedBy = "user")
+    private List<Perk> perks;
+    @OneToMany(mappedBy = "user")
     private List<Membership> memberships;
 
     public User() {
         this.memberships = new ArrayList<>();
-        this.perksPosted = new ArrayList<>();
+        this.perks = new ArrayList<>();
     }
 
-    public User(String userName, String password, List<Perk> perks){
-        this.userName = userName;
+    public User(String username, String password, List<Membership> memberships){
+        this.username = username;
         this.password = password;
-        this.memberships = new ArrayList<>();
-        perksPosted = new ArrayList<>(perks);
+        this.memberships = new ArrayList<>(memberships);
+        this.perks = new ArrayList<>();
     }
 
-    public void setUserName(String userName){
-        this.userName = userName;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    public void setUsername(String username){
+        this.username = username;
     }
 
     public void setPassword (String password){
@@ -38,29 +57,33 @@ public class User {
         memberships.add(membership);
     }
 
-    public void addPerkpost (Perk perk){
-        perksPosted.add(perk);
+    public List<Membership> getMemberships() {
+        return memberships;
     }
 
-    public void addPerkPosts(List<Perk> perks){
-        perksPosted.addAll(perks);
+    public void addVote (Perk perk){
+        perks.add(perk);
     }
 
-    public String getUserName(){
-        return userName;
+    public void removeVote (Perk perk){
+        perks.remove(perk);
     }
 
-    public String getPassword (){
+    public String getUsername(){
+        return username;
+    }
+
+    public String getPassword(){
         return password;
     }
 
-    public List<Perk> getPerkposts (){
-        return perksPosted;
+    public List<Perk> getPerks(){
+        return perks;
     }
 
     public String toString(){
         String str = "";
-        for (Perk perk : perksPosted){
+        for (Perk perk : perks){
             str += perk.toString() + "\n";
         }
         return str;

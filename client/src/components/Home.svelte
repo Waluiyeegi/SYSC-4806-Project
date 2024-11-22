@@ -1,13 +1,17 @@
 <script>
   import { onMount } from "svelte";
 
+
+
   let loggedIn = false;
   let perks = [];
 
-  onMount(async () => {
-    const response = await fetch("http://localhost:8080/api/perks");
-    perks = await response.json();
-  });
+  async function fetchPerks() {
+      const response = await fetch("/api/perks");
+      perks = await response.json();
+  }
+
+  fetchPerks();
 </script>
 
 <main>
@@ -16,15 +20,15 @@
       <div class="top-bar-left">
         <!-- for later use, if we add a logo or need more buttons -->
       </div>
-      <div class="top-bar-right">
-        {#if loggedIn}
-            <button>Profile</button>
-            <button>Log Out</button>
-        {:else}
-            <button>Log In</button>
-            <button>Register</button>
-        {/if}
-      </div>
+        <div class="top-bar-right">
+            {#if loggedIn}
+                <a href="/profile"><button>Profile</button></a>
+                <button on:click={() => { loggedIn = false; }}>Log Out</button>
+            {:else}
+                <a href="/login"><button>Log In</button></a>
+                <a href="/register"><button>Register</button></a>
+            {/if}
+        </div>
     </div>
     <div class="content-section">
         <div class="filter-section">
