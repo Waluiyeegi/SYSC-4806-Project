@@ -1,17 +1,11 @@
 <script>
   import { onMount } from "svelte";
-
+  import { Link } from "svelte-routing";
 
 
   let loggedIn = false;
   let perks = [];
 
-  async function fetchPerks() {
-      const response = await fetch("/api/perks");
-      perks = await response.json();
-  }
-
-  fetchPerks();
 </script>
 
 <main>
@@ -22,11 +16,11 @@
       </div>
         <div class="top-bar-right">
             {#if loggedIn}
-                <a href="/profile"><button>Profile</button></a>
+                <Link to="/profile"><button>Profile</button></Link>
                 <button on:click={() => { loggedIn = false; }}>Log Out</button>
             {:else}
-                <a href="/login"><button>Log In</button></a>
-                <a href="/register"><button>Register</button></a>
+                <Link to="/login"><button>Log In</button></Link>
+                <Link to="/register"><button>Register</button></Link>
             {/if}
         </div>
     </div>
