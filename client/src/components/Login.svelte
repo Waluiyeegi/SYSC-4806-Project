@@ -1,8 +1,8 @@
 <script>
     import { writable } from "svelte/store";
+    import { authState } from "../authStore";
+    import { navigate } from "svelte-routing"; // Use navigate for redirection
     import axios from "axios";
-
-    export let onLoginSuccess; // Callback to notify parent of successful login
 
     let username = "";
     let password = "";
@@ -14,14 +14,21 @@
                 username,
                 password,
             });
+
             error = "";
-            const user = response.data; // Contains { username }
-            onLoginSuccess(user); // Pass user details to parent or store
+
+            // Update the authentication state
+            authState.set({
+                loggedIn: true,
+                username: response.data.username,
+            });
+
+            // Redirect to the homepage
+            navigate("/");
         } catch (err) {
             error = err.response?.data || "Invalid username or password.";
         }
     }
-
 </script>
 
 <main class="auth-container">

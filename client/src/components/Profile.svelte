@@ -19,12 +19,7 @@
         memberships = memberships.filter((_, i) => i !== index);
     }
 
-    // Toggle edit mode for a membership
-    function toggleEdit(index) {
-        memberships = memberships.map((mem, i) =>
-            i === index ? { ...mem, isEditing: !mem.isEditing } : mem
-        );
-    }
+
 
     // Save edited membership
     function saveMembership(index, newName) {
@@ -38,7 +33,7 @@
     async function saveProfile() {
         try {
             const response = await fetch("/api/users/profile", {
-                method: "PUT",
+                method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, memberships: memberships.map(mem => mem.name) }),
             });

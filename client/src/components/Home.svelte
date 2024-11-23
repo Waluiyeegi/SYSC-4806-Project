@@ -1,10 +1,26 @@
 <script>
-  import { onMount } from "svelte";
+  import { authState } from "../authStore";
   import { Link } from "svelte-routing";
 
-
-  let loggedIn = false;
   let perks = [];
+
+  // Subscribe to authState
+  $: loggedIn = $authState.loggedIn;
+
+  async function fetchPerks() {
+      // Fetch perks from the backend (replace with actual API if needed)
+      const response = await fetch("/api/perks");
+      perks = await response.json();
+  }
+
+  fetchPerks();
+
+  function logOut() {
+      authState.set({
+          loggedIn: false,
+          username: null,
+      });
+  }
 
 </script>
 
@@ -17,7 +33,7 @@
         <div class="top-bar-right">
             {#if loggedIn}
                 <Link to="/profile"><button>Profile</button></Link>
-                <button on:click={() => { loggedIn = false; }}>Log Out</button>
+                <button on:click={logOut}>Log Out</button>
             {:else}
                 <Link to="/login"><button>Log In</button></Link>
                 <Link to="/register"><button>Register</button></Link>
@@ -25,9 +41,12 @@
         </div>
     </div>
     <div class="content-section">
-        <div class="filter-section">
-          <h3>Filter Section</h3>
-        </div>
+        {#if loggedIn}
+            <div class="filter-section">
+                <h3>Filter Section</h3>
+                <!-- Add filter UI here -->
+            </div>
+        {/if}
         <div class="perk-list-section">
           <button class="add-perk-btn">Add Perk</button>
           <div class="perk-list">
