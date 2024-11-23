@@ -6,10 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "`user`")
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true, nullable = false)
@@ -17,9 +18,10 @@ public class User {
 
     @Column(nullable = false)
     private String password;
-    @OneToMany(mappedBy = "user")
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Perk> perks;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Membership> memberships;
 
     public User() {

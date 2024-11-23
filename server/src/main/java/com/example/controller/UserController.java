@@ -10,6 +10,7 @@ import com.example.service.UserService;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -38,7 +39,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/profile")
+    @PostMapping("/profile")
     public ResponseEntity<?> updateProfile(@RequestBody User profile) {
         try {
             List<String> membershipNames = profile.getMemberships()
