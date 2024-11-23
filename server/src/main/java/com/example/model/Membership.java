@@ -10,6 +10,12 @@ public class Membership {
 
     @Column(nullable = false)
     private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @OneToMany(mappedBy = "membership", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Perk> perks;
 
     @Id
@@ -25,23 +31,36 @@ public class Membership {
         this.name = name;
     }
 
-    public void setName(String name){
-        this.name = name;
+    public Long getId() {
+        return id;
     }
 
-    public void addPerk(Perk perk){
-        perks.add(perk);
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void addPerks(List<Perk> perk){
-        perks.addAll(perk);
-    }
-
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    public List<Perk> getPerks(){
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Perk> getPerks() {
         return perks;
     }
+
+    public void addPerk(Perk perk) {
+        perks.add(perk);
+    }
+
 }

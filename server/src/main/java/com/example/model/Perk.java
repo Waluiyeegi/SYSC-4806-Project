@@ -1,7 +1,6 @@
 package com.example.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,12 +9,23 @@ import java.util.List;
 public class Perk {
 
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
+    @Column(name = "perk_value")
     private String value;
+    @ManyToOne
+    @JoinColumn(name = "membership_id", nullable = false)
     private Membership membership;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
+    @OneToMany(mappedBy = "perk", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Restriction> restrictions;
     private int upvotes;
     private int downvotes;
@@ -38,6 +48,14 @@ public class Perk {
 
         this.product = product;
         this.membership = membership;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setName(String name){
@@ -68,6 +86,10 @@ public class Perk {
 
     public List<Restriction> getRestrictions(){
         return restrictions;
+    }
+
+    public void setRestrictions(List<Restriction> restrictions) {
+        this.restrictions = restrictions;
     }
 
     public int getUpvotes (){
