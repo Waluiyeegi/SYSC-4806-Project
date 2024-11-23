@@ -1,13 +1,11 @@
 <script>
   import { onMount } from "svelte";
+  import { Link } from "svelte-routing";
+
 
   let loggedIn = false;
   let perks = [];
 
-  onMount(async () => {
-    const response = await fetch("http://localhost:8080/api/perks");
-    perks = await response.json();
-  });
 </script>
 
 <main>
@@ -16,15 +14,15 @@
       <div class="top-bar-left">
         <!-- for later use, if we add a logo or need more buttons -->
       </div>
-      <div class="top-bar-right">
-        {#if loggedIn}
-            <button>Profile</button>
-            <button>Log Out</button>
-        {:else}
-            <button>Log In</button>
-            <button>Register</button>
-        {/if}
-      </div>
+        <div class="top-bar-right">
+            {#if loggedIn}
+                <Link to="/profile"><button>Profile</button></Link>
+                <button on:click={() => { loggedIn = false; }}>Log Out</button>
+            {:else}
+                <Link to="/login"><button>Log In</button></Link>
+                <Link to="/register"><button>Register</button></Link>
+            {/if}
+        </div>
     </div>
     <div class="content-section">
         <div class="filter-section">
