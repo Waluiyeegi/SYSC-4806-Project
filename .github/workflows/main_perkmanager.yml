@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy JAR app to Azure Web App - SYSC-4806-Project-Group8
+name: Build and deploy JAR app to Azure Web App - PerkManager
 
 on:
   push:
@@ -50,15 +50,15 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_C338B8464B904572800A3BD082C88E68 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_3FC476081ADE41CD9BAAFE44CDC88014 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_9E74B0FB3CF84DBAA977F14C37B55B52 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_DF28755A7E3A4C85BE56A53CE506EB0E }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_6F03419FBE9C4BFFA30AE7F6E998E5CB }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_4CBC1AEAA73648F38F674EEDFBB8637B }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'SYSC-4806-Project-Group8'
+          app-name: 'PerkManager'
           slot-name: 'Production'
           package: '*.jar'
           
