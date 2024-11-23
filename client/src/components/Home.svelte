@@ -29,7 +29,7 @@
           <h3>Filter Section</h3>
         </div>
         <div class="perk-list-section">
-          <button class="add-perk-btn">Add Perk</button>
+            <Link to="/addNewPerk"><button class="add-perk-btn">Add Perk</button></Link>
           <div class="perk-list">
             <ul>
               {#each perks as perk (perk.id)}

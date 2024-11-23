@@ -1,6 +1,7 @@
 <script>
     import { onMount } from 'svelte';
-    import { goto } from '$app/navigation';
+    import { Link } from "svelte-routing";
+    //import { goto } from '$app/navigation';
 
     // Form data for the new perk
     let perk = {
@@ -22,7 +23,7 @@
 
             if (response.ok) {
                 alert('Perk added successfully!');
-                goto('/'); // Navigate to another page after submission
+                //goto('/'); // Navigate to another page after submission
             } else {
                 const error = await response.json();
                 alert('Error: ' + error.message);
@@ -49,15 +50,7 @@
             <label for="description">Description</label>
             <textarea id="description" bind:value={perk.description} required></textarea>
         </div>
-        <div>
-            <label for="geographicArea">Geographic Area</label>
-            <input type="text" id="geographicArea" bind:value={perk.geographicArea} required />
-        </div>
-        <div>
-            <label for="expiryDate">Expiry Date</label>
-            <input type="date" id="expiryDate" bind:value={perk.expiryDate} required />
-        </div>
-        <button type="submit">Add Perk</button>
+        <Link to="/"><button type="submit">Add Perk</button></Link>
     </form>
 </main>
 
