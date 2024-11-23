@@ -1,7 +1,11 @@
+package com.example.service;
+
+import com.example.model.Membership;
+import com.example.model.User;
 import org.springframework.stereotype.Service;
+import com.example.repository.UserRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -30,7 +34,7 @@ public class UserService {
 
     public User updateUserProfile(String username, List<String> memberships) {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("com.example.model.User not found"));
         user.getMemberships().clear();
         for (String membershipName : memberships) {
             Membership membership = new Membership();

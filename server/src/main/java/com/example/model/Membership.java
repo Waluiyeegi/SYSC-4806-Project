@@ -1,10 +1,20 @@
+package com.example.model;
+
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Membership {
 
+    @Column(nullable = false)
     private String name;
     private List<Perk> perks;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     public Membership(){
         perks = new ArrayList<>();

@@ -1,3 +1,5 @@
+package com.example.model;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
@@ -19,7 +21,7 @@ public class Perk {
     private int downvotes;
     private int code;
     //expiry date
-    //private User postedBy;
+    //private com.example.model.User postedBy;
 
     public Perk (){
         restrictions = new ArrayList<>();
