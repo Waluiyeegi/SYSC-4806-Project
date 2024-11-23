@@ -1,10 +1,11 @@
+package com.example.model;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.example.repository.PerkRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 @Service
 public class PerkManager {
@@ -30,7 +31,7 @@ public class PerkManager {
         if (perkOptional.isPresent()) {
             return perkOptional.get();
         } else {
-            throw new RuntimeException("Perk[" + id + "] not found");
+            throw new RuntimeException("com.example.model.Perk[" + id + "] not found");
         }
 
     }

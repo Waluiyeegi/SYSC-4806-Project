@@ -1,6 +1,12 @@
+package com.example.controller;
+
+import com.example.model.Membership;
+import com.example.model.User;
+import com.example.model.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.example.service.UserService;
 
 import java.util.List;
 
