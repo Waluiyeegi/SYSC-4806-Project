@@ -26,9 +26,9 @@ public class Membership {
         perks = new ArrayList<>();
     }
 
-    public Membership(String name, List<Perk> initialPerks){
-        perks = new ArrayList<>(initialPerks);
+    public Membership(String name) {
         this.name = name;
+        this.perks = new ArrayList<>();
     }
 
     public Long getId() {
