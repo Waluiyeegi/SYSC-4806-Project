@@ -62,19 +62,20 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        min-height: 100vh; /* Ensure it takes up full viewport height */
-        background-color: #f0f0f0; /* Light background color */
+        background-color: #f4a261; /* Light background color */
         margin: 0;
+
     }
 
     /* Card container with 3D flip effect */
     .perk-card {
+        position: relative;
         perspective: 1000px;
         width: 200px;
-        margin: 30px;
+        height: 320px;
+        margin: 30px auto;
         border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-        background: linear-gradient(145deg, #f7f7f7, #e2e2e2); /* Soft gradient background */
+        background: linear-gradient(145deg, #f7f7f7, #e2e2e2);
     }
 
     /* Inner card structure with flip effect */
@@ -92,19 +93,18 @@
     }
 
     /* Front and back sides of the card */
-    .card-front, .card-back {
+    .card-front,
+    .card-back {
         position: absolute;
         width: 100%;
-        height: 100%;
+        height: 100%; /* Match the height of .card-inner */
         backface-visibility: hidden;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: 25px; /* Increased padding inside the card */
-        border-radius: 15px;
-        background-color: white;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        border-radius: 15px; /* Ensure consistent border radius */
+        margin: 0; /* Remove any unintended margins */
     }
 
     .card-front {
