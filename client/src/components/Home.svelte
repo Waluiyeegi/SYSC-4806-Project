@@ -11,7 +11,7 @@
 
   async function fetchPerks() {
       // Fetch perks from the backend (replace with actual API if needed)
-      const response = await fetch(`${API_URL}/api/perks`);
+      const response = await fetch(`/api/perks`);
       perks = await response.json();
   }
 
