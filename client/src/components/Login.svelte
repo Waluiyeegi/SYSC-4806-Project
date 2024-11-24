@@ -3,6 +3,7 @@
     import { authState } from "../authStore";
     import { navigate } from "svelte-routing"; // Use navigate for redirection
     import axios from "axios";
+    import API_URL from '../api.js';
 
     let username = "";
     let password = "";
@@ -10,7 +11,7 @@
 
     async function handleLogin() {
         try {
-            const response = await axios.post("/api/users/login", {
+            const response = await axios.post(`${API_URL}/api/users/login`, {
                 username,
                 password,
             });
