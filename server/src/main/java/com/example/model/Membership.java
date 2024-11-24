@@ -10,7 +10,11 @@ public class Membership {
 
     @Column(nullable = false)
     private String name;
+    @OneToMany(mappedBy = "membership", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Perk> perks;
+
+    @ManyToOne
+    private User user;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,11 +33,11 @@ public class Membership {
         this.name = name;
     }
 
-    public void addPerk(Perk perk){
+    public void setPerk(Perk perk){
         perks.add(perk);
     }
 
-    public void addPerks(List<Perk> perk){
+    public void setPerks(List<Perk> perk){
         perks.addAll(perk);
     }
 

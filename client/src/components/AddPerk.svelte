@@ -1,10 +1,10 @@
 <script>
     import { onMount } from 'svelte';
     import { Link } from "svelte-routing";
-    //import { goto } from '$app/navigation';
 
-    // Form data for the new perk
-    let perk = {
+
+        // Form data for the new perk
+        let perk = {
         product: '',
         membership: '',
         description: '',
@@ -12,30 +12,34 @@
         expiryDate: '',
     };
 
-    // Submit the form to the backend
-    async function addPerk() {
+        // Submit the form to the backend
+        async function addPerk() {
         try {
-            const response = await fetch('http://localhost:8080/api/perks', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(perk),
-            });
+        const response = await fetch('http://localhost:8080/api/perks/addNewPerk', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(perk),
+    });
 
-            if (response.ok) {
-                alert('Perk added successfully!');
-                //goto('/'); // Navigate to another page after submission
-            } else {
-                const error = await response.json();
-                alert('Error: ' + error.message);
-            }
-        } catch (error) {
-            console.error('Failed to add perk:', error);
-            alert('An unexpected error occurred.');
-        }
+        if (response.ok) {
+        alert('Perk added successfully!');
+    } else {
+        const error = await response.json();
+        alert('Error: ' + error.message);
+    }
+    } catch (error) {
+        console.error('Failed to add perk:', error);
+        alert('An unexpected error occurred.');
+    }
     }
 </script>
 
 <main>
+
+    <nav>
+        <a href="/">Home</a>
+    </nav>
+
     <h1>Add a New Perk</h1>
     <form on:submit|preventDefault={addPerk}>
         <div>
@@ -50,7 +54,15 @@
             <label for="description">Description</label>
             <textarea id="description" bind:value={perk.description} required></textarea>
         </div>
-        <Link to="/"><button type="submit">Add Perk</button></Link>
+        <div>
+            <label for="geographicArea">Geographic Area</label>
+            <input type="text" id="geographicArea" bind:value={perk.geographicArea} />
+        </div>
+        <div>
+            <label for="expiryDate">Expiry Date</label>
+            <input type="date" id="expiryDate" bind:value={perk.expiryDate} />
+        </div>
+        <button type="submit">Add Perk</button>
     </form>
 </main>
 
@@ -78,7 +90,7 @@
     }
 
     button {
-        background-color: #007bff;
+        background-color: #2a9d8f;
         color: white;
         border: none;
         border-radius: 5px;
@@ -86,6 +98,6 @@
     }
 
     button:hover {
-        background-color: #0056b3;
+        background-color: #21867a;
     }
 </style>
