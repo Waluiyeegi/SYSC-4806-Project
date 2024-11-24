@@ -4,6 +4,7 @@ import com.example.model.Perk;
 import com.example.model.PerkManager;
 import com.example.repository.PerkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
@@ -40,4 +41,9 @@ public class PerkManagerController {
         return perkManager.savePerk(perk);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePerk(@PathVariable int id) {
+        perkManager.deletePerk(id);
+        return ResponseEntity.noContent().build();
+    }
 }

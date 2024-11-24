@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import com.example.service.UserService;
 
 import java.util.List;
+import java.util.Map;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -38,20 +40,21 @@ public class UserController {
         }
     }
 
-    @PutMapping("/profile")
-    public ResponseEntity<?> updateProfile(@RequestBody User profile) {
-        try {
-            List<String> membershipNames = profile.getMemberships()
-                    .stream()
-                    .map(Membership::getName)
-                    .toList();
 
-            User updatedUser = userService.updateUserProfile(profile.getUsername(), membershipNames);
+    @PostMapping("/profile")
+    public ResponseEntity<?> updateProfile(@RequestBody Map<String, Object> payload) {
+        try {
+            String username = (String) payload.get("username");
+            List<String> memberships = (List<String>) payload.get("memberships");
+
+            // Update user profile
+            User updatedUser = userService.updateUserProfile(username, memberships);
             return ResponseEntity.ok(new UserDTO(updatedUser.getUsername()));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
 
 
 }

@@ -1,10 +1,28 @@
 <script>
-  import { onMount } from "svelte";
+  import { authState } from "../authStore";
   import { Link } from "svelte-routing";
+  import API_URL from '../api.js';
 
 
-  let loggedIn = false;
   let perks = [];
+
+  // Subscribe to authState
+  $: loggedIn = $authState.loggedIn;
+
+  async function fetchPerks() {
+      // Fetch perks from the backend (replace with actual API if needed)
+      const response = await fetch(`${API_URL}/api/perks`);
+      perks = await response.json();
+  }
+
+  fetchPerks();
+
+  function logOut() {
+      authState.set({
+          loggedIn: false,
+          username: null,
+      });
+  }
 
 </script>
 
@@ -17,7 +35,7 @@
         <div class="top-bar-right">
             {#if loggedIn}
                 <Link to="/profile"><button>Profile</button></Link>
-                <button on:click={() => { loggedIn = false; }}>Log Out</button>
+                <button on:click={logOut}>Log Out</button>
             {:else}
                 <Link to="/login"><button>Log In</button></Link>
                 <Link to="/register"><button>Register</button></Link>
@@ -25,9 +43,12 @@
         </div>
     </div>
     <div class="content-section">
-        <div class="filter-section">
-          <h3>Filter Section</h3>
-        </div>
+        {#if loggedIn}
+            <div class="filter-section">
+                <h3>Filter Section</h3>
+                <!-- Add filter UI here -->
+            </div>
+        {/if}
         <div class="perk-list-section">
             <Link to="/addNewPerk"><button class="add-perk-btn">Add Perk</button></Link>
           <div class="perk-list">
@@ -63,12 +84,24 @@
   }
 
   .top-bar {
-    grid-column: 1 / span 2;
-    background-color: #333;
-    color: white;
-    padding: 1rem;
-    display: flex;
-    justify-content: space-between;
+      height: 60px; /* Define the exact height */
+      display: grid;
+      grid-template-columns: 1fr auto;
+      justify-content: space-between;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: #333;
+      color: white;
+      padding: 1rem;
+      z-index: 100; /* Ensure it's on top of other elements */
+  }
+
+
+
+  .top-bar-left svg {
+      margin-top: -80px; /* Adjust value as needed */
   }
 
   .top-bar-right button {
@@ -82,13 +115,13 @@
     background-color: #264653;
   }
 
-  .content-section{
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    height: calc(100vh - 60px);
+  .content-section {
+      height: calc(100vh - 60px); /* Adjust height dynamically */
+      margin-top: 60px; /* Push content below the top bar */
+      width: 100vw;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
   }
 
   .filter-section {

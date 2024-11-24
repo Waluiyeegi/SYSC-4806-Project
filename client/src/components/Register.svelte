@@ -1,4 +1,6 @@
 <script>
+    import API_URL from '../api.js';
+
     let username = "";
     let password = "";
     let confirmPassword = "";
@@ -11,14 +13,14 @@
             return;
         }
         try {
-            const response = await fetch("/api/users/register", {
+            const response = await fetch(`${API_URL}/api/users/register`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, password }),
             });
 
             if (!response.ok) {
-                const errorData = await response.json();
+                const errorData = await response.text();
                 throw new Error(errorData.message || "Registration failed.");
             }
 
@@ -27,7 +29,7 @@
             error = "";
 
             setTimeout(() => {
-                location.href = "/profile-creation"; // Navigate to profile page
+                location.href = "/profile"; // Navigate to profile page
             }, 2000);
         } catch (err) {
             error = err.message;

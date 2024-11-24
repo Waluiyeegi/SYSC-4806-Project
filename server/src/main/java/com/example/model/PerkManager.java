@@ -26,6 +26,7 @@ public class PerkManager {
         return perkRepository.save(perk);
     }
 
+
     public Perk getPerkByID(int id){
         Optional<Perk> perkOptional = perkRepository.findById(id);
         if (perkOptional.isPresent()) {
@@ -34,5 +35,9 @@ public class PerkManager {
             throw new RuntimeException("com.example.model.Perk[" + id + "] not found");
         }
 
+    }
+
+    public void deletePerk(int id) {
+        perkRepository.deleteById(id);
     }
 }

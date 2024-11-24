@@ -10,9 +10,15 @@ public class Perk {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private int id;
+
+    private Long id;
+
     private String name;
+    @Column(name = "perk_value")
     private String value;
+
     private String membership;
     @ManyToOne
     private User user;
@@ -23,6 +29,21 @@ public class Perk {
 
     //private List<Restriction> restrictions;
     private String geographicArea;
+
+    @ManyToOne
+    @JoinColumn(name = "membership_id", nullable = false)
+    private Membership membership;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
+
+    @OneToMany(mappedBy = "perk", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Restriction> restrictions;
+
     private int upvotes;
     private int downvotes;
     private int code;
@@ -45,6 +66,14 @@ public class Perk {
 //        this.product = product;
 //        this.membership = membership;
 //    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public void setName(String name){
         this.name = name;
@@ -90,6 +119,10 @@ public class Perk {
 //    public List<Restriction> getRestrictions(){
 //        return restrictions;
 //    }
+
+    public void setRestrictions(List<Restriction> restrictions) {
+        this.restrictions = restrictions;
+    }
 
     public int getUpvotes (){
         return upvotes;
