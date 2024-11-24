@@ -4,6 +4,7 @@
   import Login from './components/Login.svelte'
   import Register from './components/Register.svelte'
   import Profile from './components/Profile.svelte'
+  import AddPerk from './components/AddPerk.svelte'
 
 </script>
 
@@ -12,4 +13,5 @@
   <Route path="/login" component={Login} />
   <Route path="/register" component={Register} />
   <Route path="/profile" component={Profile} />
+  <Route path="/addNewPerk" component={AddPerk} />
 </Router>
