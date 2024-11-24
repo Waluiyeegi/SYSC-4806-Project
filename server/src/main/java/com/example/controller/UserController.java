@@ -11,13 +11,18 @@ import com.example.service.UserService;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"https://proud-bush-068efce0f-56.eastus2.5.azurestaticapps.net", "http://localhost:5173"})
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @RequestMapping(method = RequestMethod.OPTIONS)
+    public ResponseEntity<?> handleOptions() {
+        return ResponseEntity.ok().build();
+    }
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
