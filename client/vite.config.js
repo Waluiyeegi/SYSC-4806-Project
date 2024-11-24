@@ -10,7 +10,7 @@ export default defineConfig({
       "/api": {
         target: process.env.VITE_API_URL || "http://localhost:8080",
         changeOrigin: true,            // Handle CORS issues
-        secure: false,                 // Allow insecure (self-signed) certificates
+        secure: true,                 // Allow insecure (self-signed) certificates
       },
     },
   }
