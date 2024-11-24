@@ -82,12 +82,24 @@
   }
 
   .top-bar {
-    grid-column: 1 / span 2;
-    background-color: #333;
-    color: white;
-    padding: 1rem;
-    display: flex;
-    justify-content: space-between;
+      height: 60px; /* Define the exact height */
+      display: grid;
+      grid-template-columns: 1fr auto;
+      justify-content: space-between;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: #333;
+      color: white;
+      padding: 1rem;
+      z-index: 100; /* Ensure it's on top of other elements */
+  }
+
+
+
+  .top-bar-left svg {
+      margin-top: -80px; /* Adjust value as needed */
   }
 
   .top-bar-right button {
@@ -101,13 +113,13 @@
     background-color: #264653;
   }
 
-  .content-section{
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    height: calc(100vh - 60px);
+  .content-section {
+      height: calc(100vh - 60px); /* Adjust height dynamically */
+      margin-top: 60px; /* Push content below the top bar */
+      width: 100vw;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
   }
 
   .filter-section {
