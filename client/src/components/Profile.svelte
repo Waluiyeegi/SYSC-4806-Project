@@ -1,12 +1,37 @@
 <script>
-    import API_URL from '../api.js';
+    import { onMount } from "svelte";
+    import { authState } from "../authStore.js";
+    import { get } from "svelte/store";
 
-    let username = "johndoe"; // Pre-filled username, replace with actual user data
+    let loggedIn = false
+    let username = "";
     let password = "********"; // Placeholder for hidden password
     let membership = "";
     let memberships = []; // List of memberships
     let message = "";
     let error = "";
+
+    $: ({ loggedIn, username } = get(authState));
+
+    // Fetch user data (including memberships) on component mount
+    onMount(async () => {
+        const { username } = get(authState); // Get username from authStore
+        try {
+            const response = await fetch(`/api/users/profile/${username}`);
+            if (!response.ok) {
+                throw new Error("Failed to fetch profile data.");
+            }
+
+            const data = await response.json(); // Expect { username: string, memberships: array }
+            memberships = data.memberships.map((name) => ({
+                name,
+                isEditing: false,
+            }));
+        } catch (err) {
+            error = err.message;
+            console.error("Error loading profile:", err);
+        }
+    });
 
     // Add a membership to the list
     function addMembership() {
@@ -34,6 +59,8 @@
     // Save user profile (including memberships)
     async function saveProfile() {
         try {
+            const { username } = get(authState); // Get username from authState
+
             const response = await fetch(`/api/users/profile`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },

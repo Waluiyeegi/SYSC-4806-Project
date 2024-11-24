@@ -48,9 +48,15 @@ public class UserController {
 
     @PostMapping("/profile")
     public ResponseEntity<?> updateProfile(@RequestBody Map<String, Object> payload) {
+        System.out.println("Received payload: " + payload); // Debugging incoming payload
+
         try {
             String username = (String) payload.get("username");
             List<String> memberships = (List<String>) payload.get("memberships");
+
+            if (username == null || username.trim().isEmpty()) {
+                throw new RuntimeException("Username cannot be null or empty");
+            }
 
             // Update user profile
             User updatedUser = userService.updateUserProfile(username, memberships);
@@ -59,6 +65,28 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @GetMapping("/profile/{username}")
+    public ResponseEntity<?> getUserProfile(@PathVariable String username) {
+        try {
+            User user = userService.findByUsername(username);
+            if (user == null) {
+                throw new RuntimeException("User not found");
+            }
+
+            // Map memberships to a list of strings
+            List<String> memberships = user.getMemberships().stream()
+                    .map(Membership::getName) // Ensure `Membership` has a `getName` method
+                    .toList();
+
+            return ResponseEntity.ok(new UserDTO(user.getUsername(), memberships));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
+
+
+
 
 
 

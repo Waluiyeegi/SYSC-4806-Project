@@ -11,7 +11,7 @@ public class Membership {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne
+    @ManyToOne(optional = false) // Ensures Membership must be linked to a User
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
@@ -29,6 +29,10 @@ public class Membership {
     public Membership(String name) {
         this.name = name;
         this.perks = new ArrayList<>();
+    }
+    public Membership(String name, User user) {
+        this.name = name;
+        this.user = user;
     }
 
     public Long getId() {

@@ -63,6 +63,11 @@ public class User {
         return memberships;
     }
 
+    public void setMemberships(List<Membership> memberships) {
+        this.memberships.clear();
+        this.memberships.addAll(memberships);
+    }
+
     public void addVote (Perk perk){
         perks.add(perk);
     }

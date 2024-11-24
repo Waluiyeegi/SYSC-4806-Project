@@ -1,13 +1,17 @@
 <script>
   import { authState } from "../authStore";
   import { Link } from "svelte-routing";
+  import { get } from "svelte/store";
+
   import API_URL from '../api.js';
 
 
   let perks = [];
 
   // Subscribe to authState
-  $: loggedIn = $authState.loggedIn;
+  let { loggedIn, username } = get(authState);
+
+  $: ({ loggedIn, username } = get(authState));
 
   async function fetchPerks() {
       // Fetch perks from the backend (replace with actual API if needed)
@@ -20,8 +24,9 @@
   function logOut() {
       authState.set({
           loggedIn: false,
-          username: null,
+          username: "",
       });
+      location.href = "/"; // Redirect to the homepage
   }
 
 </script>

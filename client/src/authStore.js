@@ -1,7 +1,12 @@
-// src/authStore.js
 import { writable } from "svelte/store";
 
-export const authState = writable({
+const storedAuthState = JSON.parse(localStorage.getItem("authState")) || {
     loggedIn: false,
-    username: null,
+    username: "",
+};
+
+export const authState = writable(storedAuthState);
+
+authState.subscribe((value) => {
+    localStorage.setItem("authState", JSON.stringify(value));
 });

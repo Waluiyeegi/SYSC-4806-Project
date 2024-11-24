@@ -1,9 +1,5 @@
 <script>
-    import { writable } from "svelte/store";
     import { authState } from "../authStore";
-    import { navigate } from "svelte-routing"; // Use navigate for redirection
-    import axios from "axios";
-    import API_URL from '../api.js';
 
     let username = "";
     let password = "";
@@ -11,23 +7,21 @@
 
     async function handleLogin() {
         try {
-            const response = await axios.post(`/api/users/login`, {
-                username,
-                password,
+            const response = await fetch("/api/users/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, password }),
             });
 
-            error = "";
+            if (!response.ok) {
+                throw new Error("Invalid username or password.");
+            }
 
-            // Update the authentication state
-            authState.set({
-                loggedIn: true,
-                username: response.data.username,
-            });
-
-            // Redirect to the homepage
-            navigate("/");
+            const user = await response.json();
+            authState.set({ loggedIn: true, username: user.username });
+            location.href = "/";
         } catch (err) {
-            error = err.response?.data || "Invalid username or password.";
+            error = err.message;
         }
     }
 </script>

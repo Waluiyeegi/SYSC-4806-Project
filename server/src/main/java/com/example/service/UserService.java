@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import com.example.repository.UserRepository;
 
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -33,16 +33,32 @@ public class UserService {
     }
 
     public User updateUserProfile(String username, List<String> memberships) {
+        // Find the user
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("com.example.model.User not found"));
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Clear existing memberships
         user.getMemberships().clear();
-        for (String membershipName : memberships) {
-            Membership membership = new Membership();
-            membership.setName(membershipName);
-            user.addMembership(membership);
-        }
+
+        // Create new memberships and associate them with the user
+        List<Membership> updatedMemberships = memberships.stream()
+                .map(name -> new Membership(name, user))
+                .collect(Collectors.toList());
+
+        // Add memberships to the user
+        user.setMemberships(updatedMemberships);
+
+        // Save and return the updated user
         return userRepository.save(user);
     }
+
+    // Retrieve user by username
+    public User findByUsername(String username) {
+        System.out.println("Finding user by username: " + username); // Debugging log
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
 
 }
 

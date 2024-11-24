@@ -1,5 +1,7 @@
 <script>
     import API_URL from '../api.js';
+    import { authState } from "../authStore";
+    import { get } from "svelte/store";
 
     let username = "";
     let password = "";
@@ -8,12 +10,13 @@
     let message = "";
 
     async function handleRegister() {
+
         if (password !== confirmPassword) {
             error = "Passwords do not match.";
             return;
         }
         try {
-            const response = await fetch(`/api/users/register`, {
+            const response = await fetch(`http://localhost:8080/api/users/register`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, password }),
@@ -25,6 +28,13 @@
             }
 
             const user = await response.json(); // Contains { username }
+
+            // Update the userStore
+            authState.set({
+                loggedIn: true,
+                username: user.username,
+            });
+
             message = `Registration successful for ${user.username}. Redirecting to profile creation...`;
             error = "";
 
