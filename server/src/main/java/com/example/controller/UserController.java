@@ -11,7 +11,7 @@ import com.example.service.UserService;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = {"https://proud-bush-068efce0f.5.azurestaticapps.net"}, allowCredentials = "true")
+@CrossOrigin(origins = {"https://proud-bush-068efce0f.5.azurestaticapps.net, http://localhost:5173"}, allowCredentials = "true")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -84,10 +84,4 @@ public class UserController {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
-
-
-
-
-
-
 }
