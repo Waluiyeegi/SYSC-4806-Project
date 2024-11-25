@@ -23,16 +23,30 @@ public class PerkManagerController {
 
     @PostMapping("/addNewPerk")
     public ResponseEntity<Perk> addNewPerk(@RequestBody Perk perk) {
-        if (perk.getName() == null || perk.getDescription() == null) {
-            return ResponseEntity.badRequest().build();
+        if (perk.getProduct() == null || perk.getName() == null || perk.getCode() == null) {
+            return ResponseEntity.badRequest().body(null);
         }
+        Perk savedPerk = perkRepository.save(perk);
+        return ResponseEntity.ok(savedPerk);
+    }
+
+    @PostMapping("/{id}/upvote")
+    public ResponseEntity<Perk> upvotePerk(@PathVariable Long id) {
+        Perk perk = perkRepository.findById(id).orElseThrow(() -> new RuntimeException("Perk not found"));
+        perk.setUpvotes(perk.getUpvotes() + 1);
+        return ResponseEntity.ok(perkRepository.save(perk));
+    }
+
+    @PostMapping("/{id}/downvote")
+    public ResponseEntity<Perk> downvotePerk(@PathVariable Long id) {
+        Perk perk = perkRepository.findById(id).orElseThrow(() -> new RuntimeException("Perk not found"));
+        perk.setDownvotes(perk.getDownvotes() + 1);
         return ResponseEntity.ok(perkRepository.save(perk));
     }
 
     @GetMapping
-    public List<Perk> getPerks()
-    {
-        return perkManager.getPerks();
+    public List<Perk> getPerks() {
+        return (List<Perk>) perkRepository.findAll();
     }
 
     @PostMapping
@@ -42,7 +56,7 @@ public class PerkManagerController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePerk(@PathVariable int id) {
+    public ResponseEntity<Void> deletePerk(@PathVariable Long id) {
         perkManager.deletePerk(id);
         return ResponseEntity.noContent().build();
     }

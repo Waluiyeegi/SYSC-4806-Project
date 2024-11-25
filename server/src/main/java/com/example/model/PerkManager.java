@@ -27,7 +27,7 @@ public class PerkManager {
     }
 
 
-    public Perk getPerkByID(int id){
+    public Perk getPerkByID(Long id){
         Optional<Perk> perkOptional = perkRepository.findById(id);
         if (perkOptional.isPresent()) {
             return perkOptional.get();
@@ -37,7 +37,7 @@ public class PerkManager {
 
     }
 
-    public void deletePerk(int id) {
+    public void deletePerk(Long id) {
         perkRepository.deleteById(id);
     }
 }
