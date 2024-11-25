@@ -4,10 +4,7 @@
   import { get } from "svelte/store";
   import { onMount } from 'svelte';
   import Perk from './Perk.svelte'; // Import the Perk component
-
-
-  import API_URL from '../api.js';
-
+  import API_URL from '../api.js'
 
   let perks = [];
 
@@ -18,7 +15,7 @@
 
   async function fetchPerks() {
       // Fetch perks from the backend (replace with actual API if needed)
-      const response = await fetch(`/api/perks`);
+      const response = await fetch(`${API_URL}/api/perks`);
       perks = await response.json();
   }
 

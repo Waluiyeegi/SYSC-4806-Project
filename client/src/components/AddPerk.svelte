@@ -1,6 +1,5 @@
 <script>
-    import { onMount } from 'svelte';
-    import { Link } from "svelte-routing";
+    import API_URL from '../api.js'
 
 
         // Form data for the new perk
@@ -13,10 +12,10 @@
             code: ''
         };
 
-        // Submit the form to the backend
+    // Submit the form to the backend
         async function addPerk() {
         try {
-        const response = await fetch('http://localhost:8080/api/perks/addNewPerk', {
+        const response = await fetch(`${API_URL}/api/perks/addNewPerk`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(perk),
