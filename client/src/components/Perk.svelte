@@ -11,17 +11,35 @@
         flipped = !flipped;
     };
 
-    const incrementUpvotes = () => {
-        if (!hasVoted) {
-            perk.upvotes += 1;
-            hasVoted = true;
+    const incrementUpvotes = async () => {
+        try {
+            const response = await fetch(`/api/perks/${perk.id}/upvote`, {
+                method: 'POST',
+            });
+            if (response.ok) {
+                const updatedPerk = await response.json();
+                perk.upvotes = updatedPerk.upvotes; // Update the local count
+            } else {
+                console.error('Failed to upvote');
+            }
+        } catch (error) {
+            console.error('Error upvoting perk:', error);
         }
     };
 
-    const incrementDownvotes = () => {
-        if (!hasVoted) {
-            perk.downvotes += 1;
-            hasVoted = true;
+    const incrementDownvotes = async () => {
+        try {
+            const response = await fetch(`/api/perks/${perk.id}/downvote`, {
+                method: 'POST',
+            });
+            if (response.ok) {
+                const updatedPerk = await response.json();
+                perk.downvotes = updatedPerk.downvotes; // Update the local count
+            } else {
+                console.error('Failed to downvote');
+            }
+        } catch (error) {
+            console.error('Error downvoting perk:', error);
         }
     };
 </script>
@@ -45,7 +63,8 @@
                         <span class="vote-count downvote">{perk.downvotes}</span>
                     </div>
                 </div>
-                <p class="expiry-text">Expiry: {perk.expiryDate}</p>
+                <p class="description-text">Location: {perk.geographicArea}</p>
+                <p class="description-text">Expiry: {perk.expiryDate}</p>
                 <button class="flip-button">{buttonText}</button>
             </div>
             <div class="card-back">
@@ -62,7 +81,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: #f4a261; /* Light background color */
         margin: 0;
 
     }
@@ -73,7 +91,7 @@
         perspective: 1000px;
         width: 200px;
         height: 320px;
-        margin: 30px auto;
+        padding: 20px;
         border-radius: 15px;
         background: linear-gradient(145deg, #f7f7f7, #e2e2e2);
     }
@@ -85,6 +103,7 @@
         height: 320px; /* Increased height to accommodate all content with padding */
         transition: transform 0.6s ease-in-out;
         transform-style: preserve-3d;
+        background-color: #f4a261;
         margin-bottom: 30px;
     }
 
@@ -171,10 +190,9 @@
         color: #e74c3c; /* Red for downvotes */
     }
 
-    .expiry-text {
+    .description-text {
         font-size: 14px;
         color: #777;
-        margin-top: 15px;
     }
 
     .flip-button {
@@ -185,7 +203,6 @@
         border-radius: 25px;
         cursor: pointer;
         transition: background-color 0.3s ease-in-out;
-        margin-top: 20px;
         font-size: 16px;
         font-weight: bold;
     }
