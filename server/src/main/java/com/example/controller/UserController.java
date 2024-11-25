@@ -11,7 +11,7 @@ import com.example.service.UserService;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = {"https://proud-bush-068efce0f-56.eastus2.5.azurestaticapps.net"}, allowCredentials = "true")
+@CrossOrigin(origins = {"https://proud-bush-068efce0f.5.azurestaticapps.net"}, allowCredentials = "true")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {

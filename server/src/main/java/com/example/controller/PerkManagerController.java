@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/perks")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "https://proud-bush-068efce0f.5.azurestaticapps.net")
 public class PerkManagerController {
 
     @Autowired
