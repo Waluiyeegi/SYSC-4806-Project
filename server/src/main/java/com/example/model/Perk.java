@@ -11,8 +11,6 @@ public class Perk {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    private int id;
-
     private Long id;
 
     private String name;
@@ -20,8 +18,6 @@ public class Perk {
     private String value;
 
     private String membership;
-    @ManyToOne
-    private User user;
 
     //private Product product;
     @Column(nullable = false)
@@ -30,9 +26,9 @@ public class Perk {
     //private List<Restriction> restrictions;
     private String geographicArea;
 
-    @ManyToOne
-    @JoinColumn(name = "membership_id", nullable = false)
-    private Membership membership;
+//    @ManyToOne
+//    @JoinColumn(name = "membership_id", nullable = false)
+//    private Membership membership;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -110,6 +106,7 @@ public class Perk {
     public void setMembership(String membership){
         this.membership = membership;
     }
+    public String getMembership(){return membership;}
 
     public void setGeographicArea(String geographicArea){
         this.geographicArea = geographicArea;

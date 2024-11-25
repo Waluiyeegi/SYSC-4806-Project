@@ -18,9 +18,6 @@ public class Membership {
     @OneToMany(mappedBy = "membership", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Perk> perks;
 
-    @ManyToOne
-    private User user;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -47,8 +44,9 @@ public class Membership {
         perks.add(perk);
     }
 
-    public void setPerks(List<Perk> perk){
+    public void setPerks(List<Perk> perk) {
         perks.addAll(perk);
+    }
 
     public void setId(Long id) {
         this.id = id;
