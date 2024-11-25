@@ -1,9 +1,0 @@
-{
-  "routes": [
-    {
-      "route": "/api/*",
-      "allowedRoles": ["anonymous"],
-      "rewrite": "https://perkmanager-bmanbbccczdtcca4.eastus-01.azurewebsites.net/api/"
-    }
-  ]
-}
