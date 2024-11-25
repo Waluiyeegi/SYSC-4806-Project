@@ -30,12 +30,22 @@ public class Perk {
     @Column(nullable = false)
     private String code;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id") // This ensures a foreign key is created
+    private User user;
+
     public Perk (){
         upvotes = 0;
         downvotes = 0;
     }
 
+    public User getUser() {
+        return user;
+    }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public String getProduct() {
         return product;
@@ -95,8 +105,6 @@ public class Perk {
     public void setMembership(String membership){
         this.membership = membership;
     }
-    public String getMembership(){return membership;}
-
     public String getMembership(){return membership;}
 
     public void setGeographicArea(String geographicArea){
