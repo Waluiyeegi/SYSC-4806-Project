@@ -31,14 +31,14 @@ public class PerkManagerController {
     }
 
     @PostMapping("/{id}/upvote")
-    public ResponseEntity<Perk> upvotePerk(@PathVariable Long id) {
+    public ResponseEntity<Perk> upvotePerk(@PathVariable("id") Long id) {
         Perk perk = perkRepository.findById(id).orElseThrow(() -> new RuntimeException("Perk not found"));
         perk.setUpvotes(perk.getUpvotes() + 1);
         return ResponseEntity.ok(perkRepository.save(perk));
     }
 
     @PostMapping("/{id}/downvote")
-    public ResponseEntity<Perk> downvotePerk(@PathVariable Long id) {
+    public ResponseEntity<Perk> downvotePerk(@PathVariable("id") Long id) {
         Perk perk = perkRepository.findById(id).orElseThrow(() -> new RuntimeException("Perk not found"));
         perk.setDownvotes(perk.getDownvotes() + 1);
         return ResponseEntity.ok(perkRepository.save(perk));

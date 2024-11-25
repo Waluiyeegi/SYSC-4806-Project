@@ -16,17 +16,7 @@ public class Perk {
     private String name;
 
     private String membership;
-    @ManyToOne
-    private User user;
-
-    public String getProduct() {
-        return product;
-    }
-
-    public void setProduct(String product) {
-        this.product = product;
-    }
-
+  
     private String product;
     private String description;
 
@@ -36,8 +26,7 @@ public class Perk {
 
     private int upvotes;
     private int downvotes;
-
-
+  
     @Column(nullable = false)
     private String code;
 
@@ -46,6 +35,17 @@ public class Perk {
         downvotes = 0;
     }
 
+
+
+    public String getProduct() {
+        return product;
+    }
+
+    public void setProduct(String product) {
+        this.product = product;
+    }
+
+    
     //Save for Milestone 3
 //    public Perk(String value, List<Restriction> restrictions, int code, Product product, Membership membership, String description){
 //        name = value + " " + product.getName() + " with " + membership.getName();
@@ -95,6 +95,9 @@ public class Perk {
     public void setMembership(String membership){
         this.membership = membership;
     }
+    public String getMembership(){return membership;}
+
+    public String getMembership(){return membership;}
 
     public void setGeographicArea(String geographicArea){
         this.geographicArea = geographicArea;
