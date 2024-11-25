@@ -11,13 +11,15 @@
     let message = "";
     let error = "";
 
+    import API_URL from '../api.js'
+
     $: ({ loggedIn, username } = get(authState));
 
     // Fetch user data (including memberships) on component mount
     onMount(async () => {
         const { username } = get(authState); // Get username from authStore
         try {
-            const response = await fetch(`/api/users/profile/${username}`);
+            const response = await fetch(`${API_URL}/api/users/profile/${username}`);
             if (!response.ok) {
                 throw new Error("Failed to fetch profile data.");
             }
