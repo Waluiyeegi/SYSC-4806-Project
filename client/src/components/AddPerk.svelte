@@ -5,12 +5,12 @@
 
         // Form data for the new perk
         let perk = {
-        name: '',
-        product: '',
-        membership: '',
-        geographicArea: '',
-        expiryDate: '',
-        code: ''
+            name: '',
+            product: '',
+            membership: '',
+            geographicArea: '',
+            expiryDate: '',
+            code: ''
         };
 
         // Submit the form to the backend
