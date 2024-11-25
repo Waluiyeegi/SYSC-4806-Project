@@ -2,6 +2,7 @@ package com.example.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,46 +11,37 @@ public class Perk {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    private int id;
-
     private Long id;
 
     private String name;
-    @Column(name = "perk_value")
-    private String value;
 
     private String membership;
     @ManyToOne
     private User user;
 
-    //private Product product;
-    @Column(nullable = false)
+    public String getProduct() {
+        return product;
+    }
+
+    public void setProduct(String product) {
+        this.product = product;
+    }
+
+    private String product;
     private String description;
 
-    //private List<Restriction> restrictions;
     private String geographicArea;
 
-    @ManyToOne
-    @JoinColumn(name = "membership_id", nullable = false)
-    private Membership membership;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
-
-    @OneToMany(mappedBy = "perk", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Restriction> restrictions;
+    private LocalDate expiryDate; // Added expiryDate field
 
     private int upvotes;
     private int downvotes;
-    private int code;
+
+
+    @Column(nullable = false)
+    private String code;
 
     public Perk (){
-        //restrictions = new ArrayList<>();
         upvotes = 0;
         downvotes = 0;
     }
@@ -79,13 +71,6 @@ public class Perk {
         this.name = name;
     }
 
-//    public void addRestriction (Restriction restriction){
-//        restrictions.add(restriction);
-//    }
-
-//    public void addRestrictions (List<Restriction> restriction){
-//        restrictions.addAll(restriction);
-//    }
 
     public void upvote(){
         upvotes += 1;
@@ -99,7 +84,7 @@ public class Perk {
         this.description = description;
     }
 
-    public String getName (){
+    public String getName(){
         return name;
     }
 
@@ -114,14 +99,22 @@ public class Perk {
     public void setGeographicArea(String geographicArea){
         this.geographicArea = geographicArea;
     }
-    public int getCode() {return code;}
 
-//    public List<Restriction> getRestrictions(){
-//        return restrictions;
-//    }
+    public String getGeographicArea() {
+        return geographicArea;
+    }
+    public String getCode() {return code;}
 
-    public void setRestrictions(List<Restriction> restrictions) {
-        this.restrictions = restrictions;
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public LocalDate getExpiryDate(){
+        return expiryDate;
+    }
+
+    public void setExpiryDate(LocalDate expiryDate){
+        this.expiryDate = expiryDate;
     }
 
     public int getUpvotes (){
@@ -130,6 +123,14 @@ public class Perk {
 
     public int getDownvotes (){
         return downvotes;
+    }
+
+    public void setUpvotes(int upvotes) {
+        this.upvotes = upvotes;
+    }
+
+    public void setDownvotes(int downvotes) {
+        this.downvotes = downvotes;
     }
 
     public String toString(){
