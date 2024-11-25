@@ -97,6 +97,8 @@ public class Perk {
     }
     public String getMembership(){return membership;}
 
+    public String getMembership(){return membership;}
+
     public void setGeographicArea(String geographicArea){
         this.geographicArea = geographicArea;
     }
