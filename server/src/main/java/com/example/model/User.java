@@ -88,6 +88,10 @@ public class User {
         return perks;
     }
 
+    public void setPerks(List<Perk> perks) {
+        this.perks = perks;
+    }
+
     public String toString(){
         String str = "";
         for (Perk perk : perks){
