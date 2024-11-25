@@ -14,6 +14,8 @@ In the current state, it is a full stack web application using Svelte as the fro
 
 ### Database Schema (Up to date):
   - h2 database
+![DatabaseSchema](https://github.com/user-attachments/assets/c25a4755-1e92-4cfe-a268-a1845dbe4568)
+
 ### UML Class Diagram for Models
 
 ### UML Diagram
