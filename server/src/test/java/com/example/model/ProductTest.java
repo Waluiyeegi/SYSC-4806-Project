@@ -1,3 +1,5 @@
+package com.example.model;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.example.model.Product;
