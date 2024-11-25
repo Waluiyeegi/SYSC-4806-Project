@@ -68,11 +68,11 @@ public class User {
         this.memberships.addAll(memberships);
     }
 
-    public void addVote (Perk perk){
+    public void addPerk (Perk perk){
         perks.add(perk);
     }
 
-    public void removeVote (Perk perk){
+    public void removePerk (Perk perk){
         perks.remove(perk);
     }
 
