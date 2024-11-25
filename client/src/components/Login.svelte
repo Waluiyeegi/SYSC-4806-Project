@@ -1,5 +1,6 @@
 <script>
     import { authState } from "../authStore";
+    import API_URL from '../api.js'
 
     let username = "";
     let password = "";
@@ -7,7 +8,7 @@
 
     async function handleLogin() {
         try {
-            const response = await fetch("/api/users/login", {
+            const response = await fetch(`${API_URL}/api/users/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username, password }),

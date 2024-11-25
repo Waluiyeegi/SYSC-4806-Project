@@ -1,5 +1,6 @@
 <script>
-    // Arbitrary values for testing
+    import API_URL from '../api.js'
+
     export let perk;
 
     export let buttonText = 'View Perk';
@@ -13,7 +14,7 @@
 
     const incrementUpvotes = async () => {
         try {
-            const response = await fetch(`/api/perks/${perk.id}/upvote`, {
+            const response = await fetch(`${API_URL}/api/perks/${perk.id}/upvote`, {
                 method: 'POST',
             });
             if (response.ok) {
