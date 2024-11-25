@@ -10,6 +10,7 @@ In the current state, it is a full stack web application using Svelte as the fro
 - Create the filter section for logged in users to filter by memberships, products or by descending order of expiry date
 - Update the up/downvote bug
 - Migrate the membership and product to the actual entities instead of just a string property
+- Finish the Delete Perk function
 
 ### Database Schema (Up to date):
   - h2 database
