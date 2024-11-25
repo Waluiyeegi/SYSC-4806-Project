@@ -8,7 +8,7 @@ export default defineConfig({
     port: 5173, // Svelte dev server
     proxy: {
       "/api": {
-        target: "http://localhost:8080", // Backend server URL
+        target: process.env.VITE_API_URL || "http://localhost:8080",
         changeOrigin: true,            // Handle CORS issues
         secure: false,                 // Allow insecure (self-signed) certificates
       },
