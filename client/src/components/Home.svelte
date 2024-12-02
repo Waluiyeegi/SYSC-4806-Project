@@ -49,12 +49,12 @@
             </div>
         </div>
         <div class="content-section">
-            {#if loggedIn}
+            <!--{#if loggedIn}-->
                 <div class="filter-section">
                     <h3>Filter Section</h3>
                     <!-- Add filter UI here -->
                 </div>
-            {/if}
+            <!--{/if}-->
             <div class="perk-list-section">
                 <Link to="/addNewPerk"><button class="add-perk-btn">Add Perk</button></Link>
                 <div class="perk-list">
