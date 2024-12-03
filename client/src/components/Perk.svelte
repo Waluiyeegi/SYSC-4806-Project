@@ -1,22 +1,21 @@
 <script>
-    import API_URL from '../api.js'
+    import { fade } from 'svelte/transition';  // Import fade transition
+    import { cubicOut } from 'svelte/easing';  // Import easing for optional custom easing
 
+    // Props
     export let perk;
-
     export let buttonText = 'View Perk';
 
-    let flipped = false;
-    let hasVoted = false;
+    let showBack = false;  // Controls when to show the back of the card
+    let hasVoted = false;  // Prevents multiple votes
 
     const toggleFlip = () => {
-        flipped = !flipped;
+        showBack = !showBack; // Toggle front/back content
     };
 
     const incrementUpvotes = async () => {
         try {
-            const response = await fetch(`${API_URL}/api/perks/${perk.id}/upvote`, {
-                method: 'POST',
-            });
+            const response = await fetch(`/api/perks/${perk.id}/upvote`, { method: 'POST' });
             if (response.ok) {
                 const updatedPerk = await response.json();
                 perk.upvotes = updatedPerk.upvotes; // Update the local count
@@ -30,9 +29,7 @@
 
     const incrementDownvotes = async () => {
         try {
-            const response = await fetch(`/api/perks/${perk.id}/downvote`, {
-                method: 'POST',
-            });
+            const response = await fetch(`/api/perks/${perk.id}/downvote`, { method: 'POST' });
             if (response.ok) {
                 const updatedPerk = await response.json();
                 perk.downvotes = updatedPerk.downvotes; // Update the local count
@@ -46,9 +43,10 @@
 </script>
 
 <div class="perk-container">
-    <div class="perk-card" class:flipped={flipped}>
-        <div class="card-inner" on:click={toggleFlip}>
-            <div class="card-front">
+    <div class="perk-card">
+        <!-- Front of the card -->
+        {#if !showBack}
+            <div class="card-front" in:fade={{ duration: 300 }} out:fade={{ duration: 300 }}>
                 <h2>{perk.name}</h2>
                 <div class="votes">
                     <div class="vote-option">
@@ -66,13 +64,18 @@
                 </div>
                 <p class="description-text">Location: {perk.geographicArea}</p>
                 <p class="description-text">Expiry: {perk.expiryDate}</p>
-                <button class="flip-button">{buttonText}</button>
+                <button class="flip-button" on:click={toggleFlip}>{buttonText}</button>
             </div>
-            <div class="card-back">
+        {/if}
+
+        <!-- Back of the card -->
+        {#if showBack}
+            <div class="card-back" in:fade={{ duration: 300 }} out:fade={{ duration: 300 }}>
                 <h2>Perk Code</h2>
                 <p>{perk.code}</p>
+                <button class="flip-button" on:click={toggleFlip}>Go Back</button>
             </div>
-        </div>
+        {/if}
     </div>
 </div>
 
@@ -82,130 +85,99 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        height: 100vh;
         margin: 0;
-
     }
 
-    /* Card container with 3D flip effect */
+    /* Card container */
     .perk-card {
         position: relative;
-        perspective: 1000px;
-        width: 200px;
-        height: 320px;
-        padding: 20px;
+        width: 300px;
+        height: 400px;
         border-radius: 15px;
-        background: linear-gradient(145deg, #f7f7f7, #e2e2e2);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        background-color: white;
     }
 
-    /* Inner card structure with flip effect */
-    .card-inner {
-        position: relative;
-        width: 100%;
-        height: 320px; /* Increased height to accommodate all content with padding */
-        transition: transform 0.6s ease-in-out;
-        transform-style: preserve-3d;
-        background-color: #f4a261;
-        margin-bottom: 30px;
-    }
-
-    .flipped .card-inner {
-        transform: rotateY(180deg);
-    }
-
-    /* Front and back sides of the card */
     .card-front,
     .card-back {
         position: absolute;
         width: 100%;
-        height: 100%; /* Match the height of .card-inner */
-        backface-visibility: hidden;
+        height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        border-radius: 15px; /* Ensure consistent border radius */
-        margin: 0; /* Remove any unintended margins */
-    }
-
-    .card-front {
-        z-index: 2;
+        backface-visibility: hidden; /* Hide the back during the transition */
+        border-radius: 15px;
+        padding: 20px;
+        box-sizing: border-box;
     }
 
     .card-back {
-        transform: rotateY(180deg);
         background: linear-gradient(145deg, #ff9a8b, #ff6a88); /* Backside gradient */
-        color: #fff;
+        color: white;
     }
 
     h2 {
-        font-size: 22px;
-        font-weight: bold;
-        margin-bottom: 15px; /* Increased margin */
-        color: #333;
+        font-size: 24px;
+        margin-bottom: 15px;
     }
 
     .votes {
         display: flex;
-        justify-content: center;
-        gap: 30px;
-        margin-top: 20px;
+        justify-content: space-around;
+        width: 100%;
     }
 
     .vote-option {
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
-        font-size: 16px;
     }
 
-    /* Buttons for upvotes and downvotes */
     .arrow-button {
-        border: none;
+        font-size: 24px;
         background: none;
-        font-size: 50px;
+        border: none;
         cursor: pointer;
         transition: transform 0.2s ease-in-out;
-        margin-bottom: 5px;
-    }
-
-    .arrow-button:disabled {
-        cursor: not-allowed;
-        opacity: 0.5;
     }
 
     .arrow-button:hover:not(:disabled) {
         transform: scale(1.2);
     }
 
+    .arrow-button:disabled {
+        opacity: 0.5;
+    }
+
     .vote-count {
         font-weight: bold;
-        font-size: 18px;
     }
 
     .upvote {
-        color: #2ecc71; /* Green for upvotes */
+        color: #2ecc71;
     }
 
     .downvote {
-        color: #e74c3c; /* Red for downvotes */
+        color: #e74c3c;
     }
 
     .description-text {
         font-size: 14px;
-        color: #777;
+        color: #555;
     }
 
     .flip-button {
-        padding: 12px 25px;
+        padding: 10px 20px;
         background-color: #3498db;
         color: white;
         border: none;
         border-radius: 25px;
         cursor: pointer;
-        transition: background-color 0.3s ease-in-out;
-        font-size: 16px;
-        font-weight: bold;
+        transition: background-color 0.3s;
     }
 
     .flip-button:hover {
