@@ -7,7 +7,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.3.4</version>
-        <relativePath/>
+        <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.example</groupId>
     <artifactId>Project</artifactId>
@@ -24,6 +24,16 @@
             <artifactId>junit</artifactId>
             <version>4.13.1</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>jakarta.persistence</artifactId>
+            <version>2.2.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>org.eclipse.persistence.jpa</artifactId>
+            <version>4.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.xerial</groupId>
@@ -80,7 +90,6 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-<<<<<<< Updated upstream
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
             <version>6.1.13</version>
@@ -90,13 +99,6 @@
             <artifactId>mockito-junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
-=======
-    <groupId>io.r2dbc</groupId>
-    <artifactId>r2dbc-spi</artifactId>
-    <version>1.0.0.RELEASE</version>
-</dependency>
-
->>>>>>> Stashed changes
     </dependencies>
     <build>
         <plugins>
