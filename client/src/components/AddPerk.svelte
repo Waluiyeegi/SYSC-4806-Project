@@ -1,81 +1,136 @@
 <script>
-    import API_URL from '../api.js'
 
 
-        // Form data for the new perk
-        let perk = {
-            name: '',
-            product: '',
-            membership: '',
-            geographicArea: '',
-            expiryDate: '',
-            code: ''
-        };
+    let product = '';
+    let membership = ''; // Holds the selected membership ID
+    let memberships = []; // Holds the list of memberships fetched from the backend
+    let description = '';
+    let geographicArea = '';
+    let expiryDate = '';
+    let message = '';
+    let errors = {}; // Object to store field-specific error messages
 
-    // Submit the form to the backend
-        async function addPerk() {
+    // Fetch memberships when the component loads
+    async function fetchMemberships() {
         try {
-        const response = await fetch(`${API_URL}/api/perks/addNewPerk`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(perk),
-    });
-    if (response.ok) {
-        alert('Perk added successfully!');
-        perk = {
-            name: '',
-            product: '',
-            membership: '',
-            geographicArea: '',
-            expiryDate: '',
-            code: ''
-        };
-    } else {
-        const error = await response.json();
-        alert('Error: ' + error.message);
+            const response = await axios.get('http://localhost:8080/api/memberships'); // Adjust the URL if necessary
+            memberships = response.data; // Store memberships from the response
+        } catch (error) {
+            console.error('Error fetching memberships:', error);
+            message = 'Failed to load memberships.';
+        }
     }
-    } catch (error) {
-        console.error('Failed to add perk:', error);
-        alert('An unexpected error occurred.');
+
+    // Validate form fields
+    function validateFields() {
+        errors = {};
+        if (!product) errors.product = 'Product name is required.';
+        if (!membership) errors.membership = 'Membership is required.';
+        if (!description) errors.description = 'Description is required.';
+        return Object.keys(errors).length === 0; // Validation passes if no errors
     }
+
+    // Submit form
+    async function submitForm() {
+        if (!validateFields()) {
+            message = 'Please fix the errors and try again.';
+            return;
+        }
+
+        try {
+            const response = await axios.post('http://localhost:8080/api/perks', {
+                product,
+                membership,
+                description,
+                geographicArea,
+                expiryDate,
+            });
+
+            if (response.status === 201) {
+                message = 'Perk added successfully!';
+                // Clear form fields
+                product = '';
+                membership = '';
+                description = '';
+                geographicArea = '';
+                expiryDate = '';
+                errors = {};
+            }
+        } catch (error) {
+            console.error('Error adding perk:', error);
+            message = 'Failed to add perk. Please try again.';
+        }
     }
+
+    // Fetch memberships on component load
+    fetchMemberships();
 </script>
 
 <main>
-
     <nav>
         <a href="/">Home</a>
     </nav>
 
     <h1>Add a New Perk</h1>
-    <form on:submit|preventDefault={addPerk}>
+    <form on:submit|preventDefault={submitForm}>
         <div>
-            <label for="name">Name</label>
-            <textarea id="name" bind:value={perk.name} required></textarea>
+            <input
+                    type="text"
+                    placeholder="Product"
+                    bind:value={product}
+                    required
+            />
+            {#if errors.product}
+                <p class="error">{errors.product}</p>
+            {/if}
         </div>
+
         <div>
-            <label for="product">Product</label>
-            <input type="text" id="product" bind:value={perk.product} required />
+            <!-- Membership Dropdown -->
+            <select bind:value={membership} required>
+                <option value="" disabled selected>Select Membership</option>
+                {#each memberships as membershipItem}
+                    <option value={membershipItem.id}>{membershipItem.name}</option>
+                {/each}
+            </select>
+            {#if errors.membership}
+                <p class="error">{errors.membership}</p>
+            {/if}
         </div>
+
         <div>
-            <label for="membership">Membership</label>
-            <input type="text" id="membership" bind:value={perk.membership} required />
+      <textarea
+              placeholder="Description"
+              bind:value={description}
+              required
+      ></textarea>
+            {#if errors.description}
+                <p class="error">{errors.description}</p>
+            {/if}
         </div>
+
         <div>
-            <label for="geographicArea">Geographic Area</label>
-            <input type="text" id="geographicArea" bind:value={perk.geographicArea} />
+            <input
+                    type="text"
+                    placeholder="Geographic Area"
+                    bind:value={geographicArea}
+            />
         </div>
+
         <div>
-            <label for="expiryDate">Expiry Date</label>
-            <input type="date" id="expiryDate" bind:value={perk.expiryDate} />
+            <input
+                    type="date"
+                    placeholder="Expiry Date"
+                    bind:value={expiryDate}
+            />
         </div>
-        <div>
-            <label for="code">Code</label>
-            <input id="code" bind:value={perk.code} required />
-        </div>
+
         <button type="submit">Add Perk</button>
     </form>
+
+    <p class="message">{message}</p>
 </main>
+
 
 <style>
     main {
@@ -88,14 +143,14 @@
         margin-bottom: 1rem;
     }
 
-    label {
-        display: block;
-        font-weight: bold;
-        margin-bottom: 0.5rem;
-    }
-
     input, textarea, button {
         width: 100%;
+        padding: 0.5rem;
+        font-size: 1rem;
+    }
+
+    select {
+        width: 103%;
         padding: 0.5rem;
         font-size: 1rem;
     }

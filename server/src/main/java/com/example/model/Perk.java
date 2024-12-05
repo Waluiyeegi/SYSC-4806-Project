@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import com.example.model.Membership;
 
 @Entity
 public class Perk {
@@ -15,7 +16,9 @@ public class Perk {
 
     private String name;
 
-    private String membership;
+    @ManyToOne
+    @JoinColumn(name = "membership_id", nullable = false)
+    private Membership membership;
   
     private String product;
     private String description;
@@ -102,10 +105,10 @@ public class Perk {
         return description;
     }
 
-    public void setMembership(String membership){
+    public void setMembership(Membership membership){
         this.membership = membership;
     }
-    public String getMembership(){return membership;}
+    public Membership getMembership(){return membership;}
 
     public void setGeographicArea(String geographicArea){
         this.geographicArea = geographicArea;

@@ -1,6 +1,7 @@
 package com.example.controller;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+import com.example.model.Membership;
 import com.example.model.Perk;
 import com.example.repository.PerkRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,7 +44,7 @@ public class PerkManagerControllerTest {
         mockPerk.setName("Free Basketball");
         mockPerk.setCode("Bball");
         mockPerk.setProduct("Product A");
-        mockPerk.setMembership("Gold");
+        mockPerk.setMembership(new Membership("Gold"));
         mockPerk.setGeographicArea("USA");
         mockPerk.setExpiryDate(LocalDate.of(2025, 8, 15));
         mockPerk.setUpvotes(0);
@@ -68,7 +69,7 @@ public class PerkManagerControllerTest {
         newPerk.setName("Discount on Disk");
         newPerk.setCode("UltimateFrisbee");
         newPerk.setProduct("Product B");
-        newPerk.setMembership("Silver");
+        newPerk.setMembership(new Membership("Silver"));
         newPerk.setGeographicArea("Canada");
         newPerk.setExpiryDate(LocalDate.of(2025, 6, 30));
 

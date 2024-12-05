@@ -1,8 +1,10 @@
 package com.example.controller;
 
 import com.example.model.Perk;
+import com.example.model.Membership;
 import com.example.model.PerkManager;
 import com.example.repository.PerkRepository;
+import com.example.repository.MembershipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,15 +50,12 @@ public class PerkManagerController {
     public List<Perk> getPerksByMemberships(@RequestParam List<String> memberships) {
         System.out.println("Received memberships: " + memberships); // Debug log
         if (memberships == null || memberships.isEmpty()) {
-            return perkRepository.findAll(); // Return all perks if no membership filters
+//            return perkRepository.findAll(); // Return all perks if no membership filters
         }
         List<Perk> perks = perkRepository.findByMemberships(memberships);
         System.out.println("Filtered perks: " + perks); // Debug log
         return perks;
     }
-
-
-
 
     @GetMapping
     public List<Perk> getPerks() {

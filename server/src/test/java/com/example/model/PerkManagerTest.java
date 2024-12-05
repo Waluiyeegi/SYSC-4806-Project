@@ -34,8 +34,8 @@ class PerkManagerTest {
     void testGetPerks() {
         // Given
         List<Perk> mockPerks = Arrays.asList(
-                createPerk(1L, "Free video game", "LeagueofLegends", "Product A", "Gold", "Canada"),
-                createPerk(2L, "Free Basketball", "BBall", "Product B", "Silver", "China")
+                createPerk(1L, "Free video game", "LeagueofLegends", "Product A", new Membership("Gold"), "Canada"),
+                createPerk(2L, "Free Basketball", "BBall", "Product B", new Membership("Silver"), "China")
         );
         when(perkRepository.findAll()).thenReturn(mockPerks);
 
@@ -53,7 +53,7 @@ class PerkManagerTest {
     @Test
     void testSavePerk() {
         // Given
-        Perk mockPerk = createPerk(1L, "Free video game", "LeagueofLegends", "Product A", "Gold", "Canada");
+        Perk mockPerk = createPerk(1L, "Free video game", "LeagueofLegends", "Product A", new Membership("Gold"), "Canada");
         when(perkRepository.save(mockPerk)).thenReturn(mockPerk);
 
         // When
@@ -68,7 +68,7 @@ class PerkManagerTest {
     @Test
     void testGetPerkByID_Found() {
         // Given
-        Perk mockPerk = createPerk(1L, "Free video game", "LeagueofLegends", "Product A", "Gold", "Canada");
+        Perk mockPerk = createPerk(1L, "Free video game", "LeagueofLegends", "Product A", new Membership("Gold"), "Canada");
         when(perkRepository.findById(1L)).thenReturn(Optional.of(mockPerk));
 
         // When
@@ -105,7 +105,7 @@ class PerkManagerTest {
     }
 
     // Helper method to just create my perks without me having to do each command every time
-    private Perk createPerk(Long id, String name, String code, String product, String membership, String geographicArea) {
+    private Perk createPerk(Long id, String name, String code, String product, Membership membership, String geographicArea) {
         Perk perk = new Perk();
         perk.setId(id);
         perk.setName(name);

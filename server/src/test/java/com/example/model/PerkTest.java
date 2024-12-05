@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import com.example.model.Perk;
 
+import java.lang.reflect.Member;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -15,7 +16,7 @@ class PerkTest {
 
         String description = "Test Description";
         String name = "Test Name";
-        String membership = "Test Membership";
+        Membership membership = new Membership("Test Membership");
         String code = "test Code";
         String geoArea = "test area";
         String product = "Test Product";
