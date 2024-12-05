@@ -7,11 +7,27 @@
   import API_URL from '../api.js'
 
   let perks = [];
+  let searchQuery = "";
+  let selectedGeographicAreas = []; // Initialize as an empty array
+  let geographicAreas = ["Canada", "USA", "Europe"]; //Placeholder
+  let selectAllGeographicAreas = false;
+  let isGeographicDropdownOpen = false;
+
+
+  let memberships = []; // Placeholder
+  let selectedMemberships = [];
+  let isMembershipDropdownOpen = false;
 
   // Subscribe to authState
   let { loggedIn, username } = get(authState);
 
   $: ({ loggedIn, username } = get(authState));
+
+  $: {
+      fetchPerksByMembership(selectedMemberships);
+  }
+
+
 
   async function fetchPerks() {
       // Fetch perks from the backend (replace with actual API if needed)
@@ -20,7 +36,65 @@
   }
 
   onMount(fetchPerks);
+  onMount(() => {
+      fetchUniqueMemberships();
+  });
 
+
+  function handleSelectAllGeographicAreas() {
+      if (selectAllGeographicAreas) {
+          selectedGeographicAreas = [...geographicAreas]; // Select all areas
+      } else {
+          selectedGeographicAreas = []; // Deselect all areas
+      }
+  }
+
+  function toggleGeographicDropdown() {
+      isGeographicDropdownOpen = !isGeographicDropdownOpen; // Toggles dropdown
+  }
+
+  async function fetchUniqueMemberships() {
+      try {
+          const response = await fetch("http://localhost:5173/api/perks/uniqueMemberships");
+          memberships = await response.json();
+          console.log("Fetched memberships:", memberships);
+      } catch (error) {
+          console.error("Error fetching unique memberships:", error);
+      }
+  }
+  $: {
+      console.log("Membership options available:", memberships);
+  }
+
+
+
+
+  async function fetchPerksByMembership(memberships) {
+      try {
+          if (memberships.length === 0) {
+              // Fetch all perks if no memberships are selected
+              const response = await fetch(`${API_URL}/api/perks`);
+              perks = await response.json();
+          } else {
+              // Fetch perks for all selected memberships
+              const response = await fetch(
+                  `${API_URL}/api/perks/membership?${memberships.map(m => `memberships=${encodeURIComponent(m)}`).join('&')}`
+              );
+              perks = await response.json();
+          }
+      } catch (error) {
+          console.error("Error fetching perks by membership:", error);
+      }
+  }
+
+
+
+
+
+
+  function toggleMembershipDropdown() {
+      isMembershipDropdownOpen = !isMembershipDropdownOpen; // Toggles dropdown
+  }
 
   function logOut() {
       authState.set({
@@ -53,14 +127,221 @@
                 <div class="filter-section">
                     <h3>Filter Section</h3>
                     <!-- Add filter UI here -->
+                    <div id="search-area">
+                        <label for="search">Search:</label>
+                        <input
+                                type="text"
+                                id="search"
+                                placeholder="Search for perks..."
+                                bind:value={searchQuery}
+                        />
+
+                    </div>
+
+                    <style>
+                        #search-area {
+                            margin-bottom: 10px;
+                        }
+
+                        label {
+                            font-weight: bold;
+                            display: block;
+                            margin: 10px 0 5px;
+                        }
+
+                        input[type="text"] {
+                            width: 100%;
+                            padding: 8px;
+                            margin-bottom: 10px;
+                        }
+                    </style>
+
+                    <div id="geographic-area-filter">
+                        <label for="geographic-area-dropdown" class="dropdown-label" on:click={toggleGeographicDropdown}>
+                            Geographic Area:
+                            <span class="dropdown-arrow">{isGeographicDropdownOpen ? "▲" : "▼"}</span>
+                        </label>
+
+                        {#if isGeographicDropdownOpen}
+                            <div class="geographic-checkbox-group">
+                                <!-- "All" Checkbox -->
+                                <div>
+                                    <input
+                                            type="checkbox"
+                                            id="geographic-all"
+                                            bind:checked={selectAllGeographicAreas}
+                                            on:change={handleSelectAllGeographicAreas}
+                                    />
+                                    <label for="geographic-all">All</label>
+                                </div>
+
+                                <!-- Individual Checkboxes -->
+                                {#each geographicAreas as area}
+                                    <div>
+                                        <input
+                                                type="checkbox"
+                                                id="geographic-{area}"
+                                                value={area}
+                                                bind:group={selectedGeographicAreas}
+                                        />
+                                        <label for="geographic-{area}">{area}</label>
+                                    </div>
+                                {/each}
+                            </div>
+                        {/if}
+                    </div>
+
+
+                    <style>
+                        /* Geographic Area Filter Styles */
+                        #geographic-area-filter {
+                            margin-bottom: 20px;
+                        }
+
+                        .dropdown-label {
+                            cursor: pointer;
+                            font-weight: bold;
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            padding: 10px;
+                            border: 1px solid #ccc;
+                            background-color: #fff;
+                            border-radius: 5px;
+                            user-select: none;
+                        }
+
+                        .dropdown-arrow {
+                            font-size: 14px;
+                            color: #888;
+                        }
+
+                        .geographic-checkbox-group {
+                            border: 1px solid #ccc;
+                            background-color: #fff;
+                            border-radius: 5px;
+                            margin-top: 5px;
+                            padding: 10px;
+                            display: flex;
+                            flex-direction: column;
+                            max-height: 150px;
+                            overflow-y: auto;
+                        }
+
+                        .geographic-checkbox-group div {
+                            display: flex;
+                            align-items: center;
+                            margin-bottom: 5px;
+                        }
+
+                        input[type="checkbox"] {
+                            margin-right: 8px;
+                        }
+
+                        label {
+                            font-size: 14px;
+                            color: #333;
+                        }
+
+                        /* Optional: Add hover effects to make the dropdown more interactive */
+                        .dropdown-label:hover {
+                            background-color: #f0f0f0;
+                        }
+                    </style>
+
+                    <div id="membership-filter">
+                        <label for="membership-dropdown" class="dropdown-label" on:click={toggleMembershipDropdown}>
+                            Memberships:
+                            <span class="dropdown-arrow">{isMembershipDropdownOpen ? "▲" : "▼"}</span>
+                        </label>
+
+                        {#if isMembershipDropdownOpen}
+                            <div class="membership-checkbox-group">
+                                {#each memberships as membership}
+                                    <div>
+                                        <input
+                                                type="checkbox"
+                                                id="membership-{membership}"
+                                                value={membership}
+                                                bind:group={selectedMemberships}
+                                        />
+                                        <label for="membership-{membership}">{membership}</label>
+                                    </div>
+                                {/each}
+                            </div>
+                        {/if}
+                    </div>
+                    <style>
+                        /* Membership Filter Styles */
+                        #membership-filter {
+                            margin-bottom: 20px;
+                        }
+
+                        .membership-checkbox-group {
+                            border: 1px solid #ccc;
+                            background-color: #fff;
+                            border-radius: 5px;
+                            margin-top: 5px;
+                            padding: 10px;
+                            display: flex;
+                            flex-direction: column;
+                            max-height: 150px;
+                            overflow-y: auto;
+                        }
+
+                        .membership-checkbox-group div {
+                            display: flex;
+                            align-items: center;
+                            margin-bottom: 5px;
+                        }
+
+                        input[type="checkbox"] {
+                            margin-right: 8px;
+                        }
+
+                        label {
+                            font-size: 14px;
+                            color: #333;
+                        }
+
+                        .dropdown-label {
+                            cursor: pointer;
+                            font-weight: bold;
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            padding: 10px;
+                            border: 1px solid #ccc;
+                            background-color: #fff;
+                            border-radius: 5px;
+                            user-select: none;
+                        }
+
+                        .dropdown-arrow {
+                            font-size: 14px;
+                            color: #888;
+                        }
+
+                        .dropdown-label:hover {
+                            background-color: #f0f0f0;
+                        }
+                    </style>
+
+
+
+
                 </div>
             <!--{/if}-->
             <div class="perk-list-section">
                 <Link to="/addNewPerk"><button class="add-perk-btn">Add Perk</button></Link>
                 <div class="perk-list">
-                    {#each perks as perk (perk.id)}
-                        <Perk {perk} />
-                    {/each}
+                    {#if perks.length > 0}
+                        {#each perks as perk (perk.id)}
+                            <Perk {perk} />
+                        {/each}
+                    {:else}
+                        <p>No perks found for the selected memberships.</p>
+                    {/if}
                 </div>
             </div>
         </div>

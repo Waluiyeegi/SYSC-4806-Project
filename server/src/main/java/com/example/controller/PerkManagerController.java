@@ -44,15 +44,33 @@ public class PerkManagerController {
         return ResponseEntity.ok(perkRepository.save(perk));
     }
 
+    @GetMapping("/membership")
+    public List<Perk> getPerksByMemberships(@RequestParam List<String> memberships) {
+        System.out.println("Received memberships: " + memberships); // Debug log
+        if (memberships == null || memberships.isEmpty()) {
+            return perkRepository.findAll(); // Return all perks if no membership filters
+        }
+        List<Perk> perks = perkRepository.findByMemberships(memberships);
+        System.out.println("Filtered perks: " + perks); // Debug log
+        return perks;
+    }
+
+
+
+
     @GetMapping
     public List<Perk> getPerks() {
         return (List<Perk>) perkRepository.findAll();
     }
 
     @PostMapping
-    public Perk savePerk(@RequestBody Perk perk)
-    {
+    public Perk savePerk(@RequestBody Perk perk) {
         return perkManager.savePerk(perk);
+    }
+
+    @GetMapping("/uniqueMemberships")
+    public List<String> getUniqueMemberships() {
+        return perkRepository.findDistinctMemberships();
     }
 
     @DeleteMapping("/{id}")
