@@ -56,9 +56,6 @@
       }
   }
 
-  function toggleGeographicDropdown() {
-      isGeographicDropdownOpen = !isGeographicDropdownOpen; // Toggles dropdown
-  }
 
   async function fetchUniqueMemberships() {
       try {
@@ -73,25 +70,12 @@
       console.log("Membership options available:", memberships);
   }
 
-  onMount(() => {
-      fetchUniqueGeographicAreas();
-  });
-
-  onMount(() => {
-      fetchUniqueProducts();
-  });
-
 
   $: {
       fetchPerksByGeographicArea(selectedGeographicAreas);
   }
 
-  function toggleGeographicDropdown() {
-      isGeographicDropdownOpen = !isGeographicDropdownOpen;
-  }
-  onMount(() => {
-      fetchUniqueMemberships();
-  });
+
   async function fetchUniqueGeographicAreas() {
       try {
           const response = await fetch(`${API_URL}/api/perks/uniqueGeographicAreas`);
@@ -123,9 +107,9 @@
 
   function handleSelectAllGeographicAreas() {
       if (selectAllGeographicAreas) {
-          selectedGeographicAreas = [...geographicAreas]; // Select all areas
+          selectedGeographicAreas = [...geographicAreas];
       } else {
-          selectedGeographicAreas = []; // Deselect all areas
+          selectedGeographicAreas = [];
       }
   }
 
@@ -152,11 +136,9 @@
   async function fetchPerksByProducts(products) {
       try {
           if (products.length === 0) {
-              // Fetch all perks if no products are selected
               const response = await fetch(`${API_URL}/api/perks`);
               perks = await response.json();
           } else {
-              // Fetch perks for all selected products
               const response = await fetch(
                   `${API_URL}/api/perks/product?${products
                       .map(p => `products=${encodeURIComponent(p)}`)
@@ -175,16 +157,12 @@
   }
 
 
-
-
   async function fetchPerksByMembership(memberships) {
       try {
           if (memberships.length === 0) {
-              // Fetch all perks if no memberships are selected
               const response = await fetch(`${API_URL}/api/perks`);
               perks = await response.json();
           } else {
-              // Fetch perks for all selected memberships
               const response = await fetch(
                   `${API_URL}/api/perks/membership?${memberships.map(m => `memberships=${encodeURIComponent(m)}`).join('&')}`
               );
@@ -198,10 +176,12 @@
 
 
 
-
+  function toggleGeographicDropdown() {
+      isGeographicDropdownOpen = !isGeographicDropdownOpen;
+  }
 
   function toggleMembershipDropdown() {
-      isMembershipDropdownOpen = !isMembershipDropdownOpen; // Toggles dropdown
+      isMembershipDropdownOpen = !isMembershipDropdownOpen;
   }
 
   function toggleProductDropdown() {
@@ -210,15 +190,12 @@
 
 
 
-
   async function fetchPerksByMembership(memberships) {
       try {
           if (memberships.length === 0) {
-              // Fetch all perks if no memberships are selected
               const response = await fetch(`${API_URL}/api/perks`);
               perks = await response.json();
           } else {
-              // Fetch perks for all selected memberships
               const response = await fetch(
                   `${API_URL}/api/perks/membership?${memberships.map(m => `memberships=${encodeURIComponent(m)}`).join('&')}`
               );
@@ -231,19 +208,24 @@
 
 
 
+  onMount(() => {
+      fetchUniqueGeographicAreas();
+  });
 
+  onMount(() => {
+      fetchUniqueProducts();
+  });
 
-
-  function toggleMembershipDropdown() {
-      isMembershipDropdownOpen = !isMembershipDropdownOpen; // Toggles dropdown
-  }
+  onMount(() => {
+      fetchUniqueMemberships();
+  });
 
   function logOut() {
       authState.set({
           loggedIn: false,
           username: "",
       });
-      location.href = "/"; // Redirect to the homepage
+      location.href = "/";
   }
 
 </script>
