@@ -48,7 +48,7 @@ public class PerkManagerController {
     public List<Perk> getPerksByMemberships(@RequestParam List<String> memberships) {
         System.out.println("Received memberships: " + memberships); // Debug log
         if (memberships == null || memberships.isEmpty()) {
-            return perkRepository.findAll(); // Return all perks if no membership filters
+            return (List<Perk>) perkRepository.findAll(); // Return all perks if no membership filters
         }
         List<Perk> perks = perkRepository.findByMemberships(memberships);
         System.out.println("Filtered perks: " + perks); // Debug log
