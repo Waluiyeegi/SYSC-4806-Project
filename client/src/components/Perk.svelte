@@ -1,13 +1,30 @@
 <script>
     import { fade } from 'svelte/transition';  // Import fade transition
     import { cubicOut } from 'svelte/easing';  // Import easing for optional custom easing
-
+    import { createEventDispatcher } from 'svelte';
     // Props
     export let perk;
     export let buttonText = 'View Perk';
+    export let deleteButton = 'Delete Perk';
+    const dispatch = createEventDispatcher(); // Initialize event dispatcher
 
     let showBack = false;  // Controls when to show the back of the card
     let hasVoted = false;  // Prevents multiple votes
+
+    const deletePerk = async () => {
+        try{
+            const response = await fetch(`/api/perks/${perk.id}/deleteNewPerk`, { method: 'DELETE'});
+            if(response.ok){
+                console.log("Perk deleted successfully");
+                dispatch('delete', perk.id); //
+            }
+            else {
+                console.log("Perk not deleted successfully");
+            }
+        }catch (error){
+            console.error("Error deleting perk", error);
+        }
+    }
 
     const toggleFlip = () => {
         showBack = !showBack; // Toggle front/back content
@@ -65,6 +82,7 @@
                 <p class="description-text">Location: {perk.geographicArea}</p>
                 <p class="description-text">Expiry: {perk.expiryDate}</p>
                 <button class="flip-button" on:click={toggleFlip}>{buttonText}</button>
+                <button class="delete-button" on:click={deletePerk}>{deleteButton}</button>
             </div>
         {/if}
 
