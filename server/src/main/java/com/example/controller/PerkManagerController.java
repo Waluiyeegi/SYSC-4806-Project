@@ -55,9 +55,6 @@ public class PerkManagerController {
         return perks;
     }
 
-
-
-
     @GetMapping
     public List<Perk> getPerks() {
         return (List<Perk>) perkRepository.findAll();
@@ -68,14 +65,20 @@ public class PerkManagerController {
         return perkManager.savePerk(perk);
     }
 
+    @DeleteMapping("/{id}/deleteNewPerk")
+    public ResponseEntity<Void> deletePerk(@PathVariable("id") Long id) {
+        // Check if the perk exists
+        if (!perkRepository.existsById(id)) {
+            return ResponseEntity.notFound().build(); // Return 404 if not found
+        }
+        // Delete the perk
+        perkRepository.deleteById(id);
+        return ResponseEntity.noContent().build(); // Return 204 No Content after successful deletion
+    }
+
     @GetMapping("/uniqueMemberships")
     public List<String> getUniqueMemberships() {
         return perkRepository.findDistinctMemberships();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePerk(@PathVariable Long id) {
-        perkManager.deletePerk(id);
-        return ResponseEntity.noContent().build();
-    }
 }

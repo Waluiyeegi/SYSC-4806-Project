@@ -12,8 +12,6 @@
   let geographicAreas = ["Canada", "USA", "Europe"]; //Placeholder
   let selectAllGeographicAreas = false;
   let isGeographicDropdownOpen = false;
-
-
   let memberships = []; // Placeholder
   let selectedMemberships = [];
   let isMembershipDropdownOpen = false;
@@ -23,16 +21,28 @@
 
   $: ({ loggedIn, username } = get(authState));
 
+
+  // function handleDeletePerk(event){
+  //     perks = perks.filter(perk => perk.id !== event.detail.id);
+  // }
   $: {
       fetchPerksByMembership(selectedMemberships);
   }
 
-
-
   async function fetchPerks() {
-      // Fetch perks from the backend (replace with actual API if needed)
-      const response = await fetch(`${API_URL}/api/perks`);
-      perks = await response.json();
+      try {
+          const response = await fetch(`${API_URL}/api/perks`);
+          perks = await response.json();
+          console.log("Fetched perks:", perks);
+      } catch (error) {
+          console.error("Error fetching perks:", error);
+      }
+  }
+
+  function handleDelete(event) {
+      const deletedId = event.detail; // Get the ID of the deleted perk
+      perks = perks.filter(perk => perk.id !== deletedId); // Remove the deleted perk
+      console.log("Updated perks after delete:", perks); // Debugging log
   }
 
   onMount(fetchPerks);
@@ -66,9 +76,6 @@
       console.log("Membership options available:", memberships);
   }
 
-
-
-
   async function fetchPerksByMembership(memberships) {
       try {
           if (memberships.length === 0) {
@@ -86,11 +93,6 @@
           console.error("Error fetching perks by membership:", error);
       }
   }
-
-
-
-
-
 
   function toggleMembershipDropdown() {
       isMembershipDropdownOpen = !isMembershipDropdownOpen; // Toggles dropdown
@@ -326,10 +328,6 @@
                             background-color: #f0f0f0;
                         }
                     </style>
-
-
-
-
                 </div>
             <!--{/if}-->
             <div class="perk-list-section">
@@ -337,7 +335,7 @@
                 <div class="perk-list">
                     {#if perks.length > 0}
                         {#each perks as perk (perk.id)}
-                            <Perk {perk} />
+                            <Perk {perk} on:delete={handleDelete} />
                         {/each}
                     {:else}
                         <p>No perks found for the selected memberships.</p>
