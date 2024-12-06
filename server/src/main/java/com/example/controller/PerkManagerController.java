@@ -30,6 +30,15 @@ public class PerkManagerController {
         return ResponseEntity.ok(savedPerk);
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllPerks() {
+        try {
+            return ResponseEntity.ok(perkRepository.findAll());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching perks: " + e.getMessage());
+        }
+    }
+
     @PostMapping("/{id}/upvote")
     public ResponseEntity<Perk> upvotePerk(@PathVariable("id") Long id) {
         Perk perk = perkRepository.findById(id).orElseThrow(() -> new RuntimeException("Perk not found"));
@@ -55,6 +64,8 @@ public class PerkManagerController {
         System.out.println("Filtered perks: " + perks); // Debug log
         return perks;
     }
+
+
 
     @GetMapping
     public List<Perk> getPerks() {
