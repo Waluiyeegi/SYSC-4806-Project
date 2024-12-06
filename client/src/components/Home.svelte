@@ -11,19 +11,17 @@
   let searchQuery = "";
   let selectedGeographicAreas = [];
   let geographicAreas = [];
-  let selectAllGeographicAreas = false;
   let isGeographicDropdownOpen = false;
 
-  let memberships = []; // Placeholder
+  let memberships = [];
   let selectedMemberships = [];
   let isMembershipDropdownOpen = false;
 
-  let products = []; // List of available products
-  let selectedProducts = []; // Currently selected products
-  let isProductDropdownOpen = false; // Dropdown visibility state
+  let products = [];
+  let selectedProducts = [];
+  let isProductDropdownOpen = false;
 
 
-  // Subscribe to authState
   let { loggedIn, username } = get(authState);
 
   $: ({ loggedIn, username } = get(authState));
@@ -95,15 +93,6 @@
           }
       } catch (error) {
           console.error("Error fetching perks by geographic area:", error);
-      }
-  }
-
-
-  function handleSelectAllGeographicAreas() {
-      if (selectAllGeographicAreas) {
-          selectedGeographicAreas = [...geographicAreas];
-      } else {
-          selectedGeographicAreas = [];
       }
   }
 
@@ -235,16 +224,6 @@ onMount(() => {
 
                             {#if isGeographicDropdownOpen}
                                 <div class="geographic-checkbox-group">
-                                    <!-- "All" Checkbox -->
-                                    <div>
-                                        <input
-                                            type="checkbox"
-                                            id="geographic-all"
-                                            bind:checked={selectAllGeographicAreas}
-                                            on:change={handleSelectAllGeographicAreas}
-                                        />
-                                        <label for="geographic-all">All</label>
-                                    </div>
 
                                     <!-- Individual Checkboxes -->
                                     {#each geographicAreas as area}
@@ -283,6 +262,97 @@ onMount(() => {
                                 </div>
                             {/if}
                         </div>
+                        <div id="product-filter">
+                            <label
+                                    for="product-dropdown"
+                                    class="dropdown-label"
+                                    on:click={toggleProductDropdown}
+                            >
+                                Products:
+                                <span class="dropdown-arrow">{isProductDropdownOpen ? "▲" : "▼"}</span>
+                            </label>
+
+                            {#if isProductDropdownOpen}
+                                <div class="product-checkbox-group">
+                                    {#each products as product}
+                                        <div>
+                                            <input
+                                                    type="checkbox"
+                                                    id="product-{product}"
+                                                    value={product}
+                                                    bind:group={selectedProducts}
+                                            />
+                                            <label for="product-{product}">{product}</label>
+                                        </div>
+                                    {/each}
+                                </div>
+                            {/if}
+                        </div>
+                        <style>
+                            .dropdown-label {
+                                cursor: pointer;
+                                font-weight: bold;
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+                                padding: 10px;
+                                border: 1px solid #ccc;
+                                background-color: #fff;
+                                border-radius: 5px;
+                                user-select: none;
+                            }
+
+                            .dropdown-label:hover {
+                                background-color: #f0f0f0;
+                            }
+
+                            .dropdown-arrow {
+                                font-size: 14px;
+                                color: #888;
+                            }
+
+                            .product-checkbox-group {
+                                border: 1px solid #ccc;
+                                background-color: #fff;
+                                border-radius: 5px;
+                                margin-top: 5px;
+                                padding: 10px;
+                                display: flex;
+                                flex-direction: column;
+                                max-height: 150px; /* Ensure a fixed height for scrolling */
+                                overflow-y: auto; /* Enable scrolling when content overflows */
+                                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                            }
+
+                            /* Optional: Add a scrollbar style for better visuals */
+                            .product-checkbox-group::-webkit-scrollbar {
+                                width: 8px;
+                            }
+
+                            .product-checkbox-group::-webkit-scrollbar-thumb {
+                                background-color: #ccc;
+                                border-radius: 4px;
+                            }
+
+                            .product-checkbox-group::-webkit-scrollbar-thumb:hover {
+                                background-color: #aaa;
+                            }
+
+                            .product-checkbox-group div {
+                                display: flex;
+                                align-items: center;
+                                margin-bottom: 5px;
+                            }
+
+                            input[type="checkbox"] {
+                                margin-right: 8px;
+                            }
+
+                            label {
+                                font-size: 14px;
+                                color: #333;
+                            }
+                        </style>
                     </div>
                     <div class="sorting-section">
                         <Sort parentSortFunction={updatePerks}/>
