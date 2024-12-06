@@ -47,30 +47,6 @@
       fetchUniqueMemberships();
   });
 
-
-  function handleSelectAllGeographicAreas() {
-      if (selectAllGeographicAreas) {
-          selectedGeographicAreas = [...geographicAreas]; // Select all areas
-      } else {
-          selectedGeographicAreas = []; // Deselect all areas
-      }
-  }
-
-
-  async function fetchUniqueMemberships() {
-      try {
-          const response = await fetch("http://localhost:5173/api/perks/uniqueMemberships");
-          memberships = await response.json();
-          console.log("Fetched memberships:", memberships);
-      } catch (error) {
-          console.error("Error fetching unique memberships:", error);
-      }
-  }
-  $: {
-      console.log("Membership options available:", memberships);
-  }
-
-
   $: {
       fetchPerksByGeographicArea(selectedGeographicAreas);
   }
@@ -189,36 +165,12 @@
   }
 
 
+onMount(() => {
+    fetchUniqueGeographicAreas();
+    fetchUniqueProducts();
+    fetchUniqueMemberships();
+});
 
-  async function fetchPerksByMembership(memberships) {
-      try {
-          if (memberships.length === 0) {
-              const response = await fetch(`${API_URL}/api/perks`);
-              perks = await response.json();
-          } else {
-              const response = await fetch(
-                  `${API_URL}/api/perks/membership?${memberships.map(m => `memberships=${encodeURIComponent(m)}`).join('&')}`
-              );
-              perks = await response.json();
-          }
-      } catch (error) {
-          console.error("Error fetching perks by membership:", error);
-      }
-  }
-
-
-
-  onMount(() => {
-      fetchUniqueGeographicAreas();
-  });
-
-  onMount(() => {
-      fetchUniqueProducts();
-  });
-
-  onMount(() => {
-      fetchUniqueMemberships();
-  });
 
   function logOut() {
       authState.set({
