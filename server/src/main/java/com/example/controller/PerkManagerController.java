@@ -44,15 +44,59 @@ public class PerkManagerController {
         return ResponseEntity.ok(perkRepository.save(perk));
     }
 
+    @GetMapping("/membership")
+    public List<Perk> getPerksByMemberships(@RequestParam List<String> memberships) {
+        System.out.println("Received memberships: " + memberships); // Debug log
+        if (memberships == null || memberships.isEmpty()) {
+            // Convert Iterable<Perk> to List<Perk>
+            return (List<Perk>) perkRepository.findAll();
+        }
+        List<Perk> perks = perkRepository.findByMemberships(memberships);
+        System.out.println("Filtered perks: " + perks); // Debug log
+        return perks;
+    }
+
+
+
+
     @GetMapping
     public List<Perk> getPerks() {
         return (List<Perk>) perkRepository.findAll();
     }
 
     @PostMapping
-    public Perk savePerk(@RequestBody Perk perk)
-    {
+    public Perk savePerk(@RequestBody Perk perk) {
         return perkManager.savePerk(perk);
+    }
+
+    @GetMapping("/uniqueGeographicAreas")
+    public List<String> getUniqueGeographicAreas() {
+        return perkRepository.findDistinctGeographicAreas();
+    }
+
+    @GetMapping("/geographicArea")
+    public List<Perk> getPerksByGeographicAreas(@RequestParam List<String> geographicAreas) {
+        return perkRepository.findByGeographicAreas(geographicAreas);
+    }
+
+
+
+    @GetMapping("/uniqueMemberships")
+    public List<String> getUniqueMemberships() {
+        return perkRepository.findDistinctMemberships();
+    }
+
+    @GetMapping("/uniqueProducts")
+    public List<String> getUniqueProducts() {
+        return perkRepository.findDistinctProducts();
+    }
+
+    @GetMapping("/product")
+    public List<Perk> getPerksByProducts(@RequestParam List<String> products) {
+        if (products == null || products.isEmpty()) {
+            return (List<Perk>) perkRepository.findAll();
+        }
+        return perkRepository.findByProducts(products);
     }
 
     @DeleteMapping("/{id}")
