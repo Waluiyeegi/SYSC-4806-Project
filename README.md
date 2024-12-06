@@ -13,5 +13,5 @@ In the current state, it is a full stack web application using Svelte as the fro
 ### UML Class Diagram for Models
 
 ### UML Diagram
-![SYSC4806-milestone1-UML](https://github.com/Zhangjason308/SYSC-4806-Project/blob/main/UML.png)
+![model](https://github.com/user-attachments/assets/affc2dbb-d038-42cc-afb0-4a9b498ec941)
 
