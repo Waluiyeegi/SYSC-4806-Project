@@ -13,8 +13,6 @@
   let selectAllGeographicAreas = false;
   let isGeographicDropdownOpen = false;
 
-
-
   let memberships = []; // Placeholder
   let selectedMemberships = [];
   let isMembershipDropdownOpen = false;
@@ -38,8 +36,6 @@
   }
 
 
-
-
   async function fetchPerks() {
       // Fetch perks from the backend (replace with actual API if needed)
       const response = await fetch(`${API_URL}/api/perks`);
@@ -47,6 +43,35 @@
   }
 
   onMount(fetchPerks);
+  onMount(() => {
+      fetchUniqueMemberships();
+  });
+
+
+  function handleSelectAllGeographicAreas() {
+      if (selectAllGeographicAreas) {
+          selectedGeographicAreas = [...geographicAreas]; // Select all areas
+      } else {
+          selectedGeographicAreas = []; // Deselect all areas
+      }
+  }
+
+  function toggleGeographicDropdown() {
+      isGeographicDropdownOpen = !isGeographicDropdownOpen; // Toggles dropdown
+  }
+
+  async function fetchUniqueMemberships() {
+      try {
+          const response = await fetch("http://localhost:5173/api/perks/uniqueMemberships");
+          memberships = await response.json();
+          console.log("Fetched memberships:", memberships);
+      } catch (error) {
+          console.error("Error fetching unique memberships:", error);
+      }
+  }
+  $: {
+      console.log("Membership options available:", memberships);
+  }
 
   onMount(() => {
       fetchUniqueGeographicAreas();
@@ -183,6 +208,35 @@
       isProductDropdownOpen = !isProductDropdownOpen;
   }
 
+
+
+
+  async function fetchPerksByMembership(memberships) {
+      try {
+          if (memberships.length === 0) {
+              // Fetch all perks if no memberships are selected
+              const response = await fetch(`${API_URL}/api/perks`);
+              perks = await response.json();
+          } else {
+              // Fetch perks for all selected memberships
+              const response = await fetch(
+                  `${API_URL}/api/perks/membership?${memberships.map(m => `memberships=${encodeURIComponent(m)}`).join('&')}`
+              );
+              perks = await response.json();
+          }
+      } catch (error) {
+          console.error("Error fetching perks by membership:", error);
+      }
+  }
+
+
+
+
+
+
+  function toggleMembershipDropdown() {
+      isMembershipDropdownOpen = !isMembershipDropdownOpen; // Toggles dropdown
+  }
 
   function logOut() {
       authState.set({
@@ -495,8 +549,6 @@
                             color: #333;
                         }
                     </style>
-
-
 
                 </div>
             <!--{/if}-->

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param; // Add this import
 import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.query.Param;
 
 @Repository
 public interface PerkRepository extends CrudRepository<Perk, Long> {
@@ -28,3 +29,6 @@ public interface PerkRepository extends CrudRepository<Perk, Long> {
     @Query("SELECT p FROM Perk p WHERE p.product IN :products")
     List<Perk> findByProducts(@Param("products") List<String> products);
 }
+
+
+

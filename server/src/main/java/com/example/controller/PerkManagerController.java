@@ -79,8 +79,6 @@ public class PerkManagerController {
         return perkRepository.findByGeographicAreas(geographicAreas);
     }
 
-
-
     @GetMapping("/uniqueMemberships")
     public List<String> getUniqueMemberships() {
         return perkRepository.findDistinctMemberships();
