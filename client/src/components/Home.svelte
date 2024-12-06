@@ -98,7 +98,7 @@
 
   async function fetchUniqueMemberships() {
       try {
-          const response = await fetch(`${API_URL}/api/perks/uniqueMemberships`);
+          const response = await fetch("http://localhost:5173/api/perks/uniqueMemberships");
           memberships = await response.json();
           console.log("Fetched memberships:", memberships);
       } catch (error) {
