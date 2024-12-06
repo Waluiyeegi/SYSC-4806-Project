@@ -1,9 +1,11 @@
 <script>
-    let selectedOption = "";
+  import API_URL from '../api.js'
+
+  let selectedOption = "";
     export let parentSortFunction;
     async function callSort() {
     try {
-        const response = await fetch(`http://localhost:5173/api/perks/sort/${selectedOption}`, {
+        const response = await fetch(`${API_URL}/api/perks/sort/${selectedOption}`, {
             method: 'GET',
         });
         if (response.ok) {
