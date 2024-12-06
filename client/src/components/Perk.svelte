@@ -9,7 +9,7 @@
     const dispatch = createEventDispatcher(); // Initialize event dispatcher
 
     let showBack = false;  // Controls when to show the back of the card
-    let hasVoted = false;  // Prevents multiple votes
+    let voteType = null;   // Tracks the current vote type: 'upvote', 'downvote', or null
 
     const deletePerk = async () => {
         try{
@@ -30,31 +30,39 @@
         showBack = !showBack; // Toggle front/back content
     };
 
-    const incrementUpvotes = async () => {
+    const updateVote = async (newVoteType) => {
         try {
-            const response = await fetch(`/api/perks/${perk.id}/upvote`, { method: 'POST' });
-            if (response.ok) {
-                const updatedPerk = await response.json();
-                perk.upvotes = updatedPerk.upvotes; // Update the local count
-            } else {
-                console.error('Failed to upvote');
-            }
-        } catch (error) {
-            console.error('Error upvoting perk:', error);
-        }
-    };
+            let response;
 
-    const incrementDownvotes = async () => {
-        try {
-            const response = await fetch(`/api/perks/${perk.id}/downvote`, { method: 'POST' });
+            // If the user is changing their vote
+            if (voteType === 'upvote' && newVoteType === 'downvote') {
+                // Decrease upvote and increase downvote
+                response = await fetch(`/api/perks/${perk.id}/downvote`, { method: 'POST' });
+                perk.upvotes -= 1;
+                perk.downvotes += 1;
+            } else if (voteType === 'downvote' && newVoteType === 'upvote') {
+                // Decrease downvote and increase upvote
+                response = await fetch(`/api/perks/${perk.id}/upvote`, { method: 'POST' });
+                perk.downvotes -= 1;
+                perk.upvotes += 1;
+            } else if (voteType === null) {
+                // If the user is voting for the first time
+                if (newVoteType === 'upvote') {
+                    response = await fetch(`/api/perks/${perk.id}/upvote`, { method: 'POST' });
+                    perk.upvotes += 1;
+                } else if (newVoteType === 'downvote') {
+                    response = await fetch(`/api/perks/${perk.id}/downvote`, { method: 'POST' });
+                    perk.downvotes += 1;
+                }
+            }
+
             if (response.ok) {
-                const updatedPerk = await response.json();
-                perk.downvotes = updatedPerk.downvotes; // Update the local count
+                voteType = newVoteType; // Update the current vote type
             } else {
-                console.error('Failed to downvote');
+                console.error('Failed to update vote');
             }
         } catch (error) {
-            console.error('Error downvoting perk:', error);
+            console.error('Error updating vote:', error);
         }
     };
 </script>
@@ -67,13 +75,21 @@
                 <h2>{perk.name}</h2>
                 <div class="votes">
                     <div class="vote-option">
-                        <button class="arrow-button" on:click|stopPropagation={incrementUpvotes} disabled={hasVoted}>
+                        <button
+                                class="arrow-button"
+                                on:click|stopPropagation={() => updateVote('upvote')}
+                                class:active={voteType === 'upvote'}
+                        >
                             ⬆️
                         </button>
                         <span class="vote-count upvote">{perk.upvotes}</span>
                     </div>
                     <div class="vote-option">
-                        <button class="arrow-button" on:click|stopPropagation={incrementDownvotes} disabled={hasVoted}>
+                        <button
+                                class="arrow-button"
+                                on:click|stopPropagation={() => updateVote('downvote')}
+                                class:active={voteType === 'downvote'}
+                        >
                             ⬇️
                         </button>
                         <span class="vote-count downvote">{perk.downvotes}</span>
