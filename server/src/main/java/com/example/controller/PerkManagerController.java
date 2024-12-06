@@ -74,7 +74,7 @@ public class PerkManagerController {
     @GetMapping("/geographicArea")
     public List<Perk> getPerksByGeographicAreas(@RequestParam List<String> geographicAreas) {
         return perkRepository.findByGeographicAreas(geographicAreas);
-      
+    }
     @DeleteMapping("/{id}/deleteNewPerk")
     public ResponseEntity<Void> deletePerk(@PathVariable("id") Long id) {
         // Check if the perk exists
@@ -102,12 +102,6 @@ public class PerkManagerController {
             return (List<Perk>) perkRepository.findAll();
         }
         return perkRepository.findByProducts(products);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePerk(@PathVariable Long id) {
-        perkManager.deletePerk(id);
-        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/sort/{sortedSelection}")

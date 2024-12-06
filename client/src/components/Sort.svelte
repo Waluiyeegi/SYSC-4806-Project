@@ -38,7 +38,12 @@
     background-color: #301818;
     padding: 20px;
     text-align: center;
-		color: #FFFFFF;
+    color: #FFFFFF;
+  }
+
+  h1
+  {
+    color: white;
   }
 
   .button-section {
@@ -49,6 +54,7 @@
     align-items: center;
     height: 100px;
   }
+
 .selection
 	{
     background-color: #FFFFFF;
