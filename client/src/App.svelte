@@ -6,7 +6,6 @@
   import Profile from './components/Profile.svelte'
   import AddPerk from './components/AddPerk.svelte'
 
-
 </script>
 
 <Router>
@@ -16,4 +15,3 @@
   <Route path="/profile" component={Profile} />
   <Route path="/addNewPerk" component={AddPerk} />
 </Router>
-
