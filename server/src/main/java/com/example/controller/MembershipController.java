@@ -19,9 +19,9 @@ public class MembershipController {
     @Autowired
     private PerkRepository perkRepository;
 
-    @PostMapping
-    public ResponseEntity<Membership> createMembership(@RequestBody Membership membership) {
-        Membership savedMembership = membershipRepository.save(membership);
+    @PostMapping("/createMembership")
+    public ResponseEntity<Membership> createMembership(@RequestBody String name) {
+        Membership savedMembership = membershipRepository.save(new Membership(name));
         return ResponseEntity.ok(savedMembership);
     }
 

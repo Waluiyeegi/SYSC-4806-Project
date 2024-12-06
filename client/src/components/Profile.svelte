@@ -2,6 +2,7 @@
     import { onMount } from "svelte";
     import { authState } from "../authStore.js";
     import { get } from "svelte/store";
+    import axios from 'axios';
 
     let loggedIn = false
     let username = "";
@@ -51,10 +52,19 @@
 
 
     // Save edited membership
-    function saveMembership(index, newName) {
+    async function saveMembership(index, newName) {
+        try {
+            const response = await axios.post('http://localhost:5173/api/memberships/createPerk', {
+                newName,
+            });
+
+        } catch (error) {
+            console.error('Error adding Membership:', error);
+            message = 'Failed to add Membership. Please try again.';
+        }
         if (newName.trim() === "") return;
         memberships = memberships.map((mem, i) =>
-            i === index ? { ...mem, name: newName.trim(), isEditing: false } : mem
+            i === index ? {...mem, name: newName.trim(), isEditing: false} : mem
         );
     }
 

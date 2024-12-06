@@ -1,20 +1,25 @@
 <script>
 
+    import API_URL from '../api.js'
+    import axios from 'axios';
 
     let product = '';
     let membership = ''; // Holds the selected membership ID
     let memberships = []; // Holds the list of memberships fetched from the backend
     let description = '';
     let geographicArea = '';
-    let expiryDate = '';
+    let expiryDate = ' ';
     let message = '';
+    let code = '';
+    let perkName = '';
     let errors = {}; // Object to store field-specific error messages
 
     // Fetch memberships when the component loads
     async function fetchMemberships() {
         try {
-            const response = await axios.get('http://localhost:8080/api/memberships'); // Adjust the URL if necessary
+            const response = await axios.get('http://localhost:5173/api/memberships');
             memberships = response.data; // Store memberships from the response
+            console.log(memberships)
         } catch (error) {
             console.error('Error fetching memberships:', error);
             message = 'Failed to load memberships.';
@@ -25,8 +30,12 @@
     function validateFields() {
         errors = {};
         if (!product) errors.product = 'Product name is required.';
-        if (!membership) errors.membership = 'Membership is required.';
+        if (!membership){
+            errors.membership = 'Membership is required.';
+            console.log(membership);
+        }
         if (!description) errors.description = 'Description is required.';
+        if (!code) errors.code = 'Product code is required.';
         return Object.keys(errors).length === 0; // Validation passes if no errors
     }
 
@@ -38,12 +47,15 @@
         }
 
         try {
-            const response = await axios.post('http://localhost:8080/api/perks', {
+            console.log(membership)
+            const response = await axios.post('http://localhost:5173/api/perks/createPerk', {
                 product,
                 membership,
                 description,
                 geographicArea,
                 expiryDate,
+                code,
+                perkName
             });
 
             if (response.status === 201) {
@@ -53,7 +65,9 @@
                 membership = '';
                 description = '';
                 geographicArea = '';
-                expiryDate = '';
+                expiryDate = ' ';
+                code = '';
+                perkName = '';
                 errors = {};
             }
         } catch (error) {
@@ -73,6 +87,14 @@
 
     <h1>Add a New Perk</h1>
     <form on:submit|preventDefault={submitForm}>
+
+        <div>
+            <input
+                    type="text"
+                    placeholder="Name"
+                    bind:value={perkName}
+            />
+        </div>
         <div>
             <input
                     type="text"
@@ -86,11 +108,10 @@
         </div>
 
         <div>
-            <!-- Membership Dropdown -->
             <select bind:value={membership} required>
                 <option value="" disabled selected>Select Membership</option>
                 {#each memberships as membershipItem}
-                    <option value={membershipItem.id}>{membershipItem.name}</option>
+                    <option value={String(membershipItem.id)}>{membershipItem.name}</option>
                 {/each}
             </select>
             {#if errors.membership}
@@ -122,6 +143,14 @@
                     type="date"
                     placeholder="Expiry Date"
                     bind:value={expiryDate}
+            />
+        </div>
+
+        <div>
+            <input
+                    type="text"
+                    placeholder="Code"
+                    bind:value={code}
             />
         </div>
 

@@ -6,11 +6,15 @@ import com.example.model.PerkManager;
 import com.example.repository.PerkRepository;
 import com.example.repository.MembershipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/perks")
@@ -23,6 +27,9 @@ public class PerkManagerController {
     @Autowired
     private PerkManager perkManager;
 
+    @Autowired
+    private MembershipRepository membershipRepository;
+
     @PostMapping("/addNewPerk")
     public ResponseEntity<Perk> addNewPerk(@RequestBody Perk perk) {
         if (perk.getProduct() == null || perk.getName() == null || perk.getCode() == null) {
@@ -30,6 +37,35 @@ public class PerkManagerController {
         }
         Perk savedPerk = perkRepository.save(perk);
         return ResponseEntity.ok(savedPerk);
+    }
+    @PostMapping("/createPerk")
+    public ResponseEntity<Perk> createPerk(@RequestBody Map<String, Object> payload) {
+        Long membershipId = Long.valueOf(payload.get("membership").toString());
+        String description = payload.get("description").toString();
+        String product = payload.get("product").toString();
+        String geographicArea = payload.get("geographicArea").toString();
+        String expiryDate = payload.get("expiryDate").toString();
+        String code = payload.get("code").toString();
+        String perkName = payload.get("perkName").toString();
+
+        Membership membership = membershipRepository.findById(membershipId)
+                .orElseThrow(() -> new RuntimeException("Membership not found"));
+
+        //System.out.println(membership.getId());
+
+        Perk perk = new Perk();
+        perk.setName(perkName);
+        perk.setMembership(membership);
+        perk.addDescription(description);
+        perk.setProduct(product);
+        perk.setGeographicArea(geographicArea);
+        perk.setCode(code);
+        if (!Objects.equals(expiryDate, " ")) {
+            perk.setExpiryDate(LocalDate.parse(expiryDate));
+        }
+
+        Perk savedPerk = perkRepository.save(perk);
+        return ResponseEntity.ok(savedPerk);//.status(HttpStatus.CREATED).body(savedPerk); // //
     }
 
     @PostMapping("/{id}/upvote")

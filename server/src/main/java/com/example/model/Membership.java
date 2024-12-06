@@ -1,5 +1,6 @@
 package com.example.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -13,9 +14,11 @@ public class Membership {
 
     @ManyToOne(optional = false) // Ensures Membership must be linked to a User
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
 
     @OneToMany(mappedBy = "membership", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Perk> perks = new ArrayList<>();
 
 
