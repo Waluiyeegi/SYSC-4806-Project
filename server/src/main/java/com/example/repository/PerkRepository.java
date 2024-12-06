@@ -22,19 +22,19 @@ public interface PerkRepository extends CrudRepository<Perk, Long> {
     @Query("SELECT DISTINCT p.membership FROM Perk p")
     List<String> findDistinctMemberships();
 
+    @Query("SELECT DISTINCT p.product FROM Perk p")
+    List<String> findDistinctProducts();
+
+    @Query("SELECT p FROM Perk p WHERE p.product IN :products")
+    List<Perk> findByProducts(@Param("products") List<String> products);
+  
     Iterable<Perk> findAllByOrderByNameAsc();
     Iterable<Perk> findAllByOrderByNameDesc();
     Iterable<Perk> findAllByOrderByUpvotesDesc();
     Iterable<Perk> findAllByOrderByDownvotesDesc();
     Iterable<Perk> findAllByOrderByExpiryDateAsc();
     Iterable<Perk> findAllByOrderByExpiryDateDesc();
-
-    @Query("SELECT DISTINCT p.product FROM Perk p")
-    List<String> findDistinctProducts();
-
-    @Query("SELECT p FROM Perk p WHERE p.product IN :products")
-    List<Perk> findByProducts(@Param("products") List<String> products);
+  
 }
-
 
 

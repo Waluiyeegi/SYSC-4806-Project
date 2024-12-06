@@ -55,6 +55,7 @@ public class PerkManagerController {
         System.out.println("Filtered perks: " + perks); // Debug log
         return perks;
     }
+
     @GetMapping
     public List<Perk> getPerks() {
         return (List<Perk>) perkRepository.findAll();
@@ -73,6 +74,16 @@ public class PerkManagerController {
     @GetMapping("/geographicArea")
     public List<Perk> getPerksByGeographicAreas(@RequestParam List<String> geographicAreas) {
         return perkRepository.findByGeographicAreas(geographicAreas);
+      
+    @DeleteMapping("/{id}/deleteNewPerk")
+    public ResponseEntity<Void> deletePerk(@PathVariable("id") Long id) {
+        // Check if the perk exists
+        if (!perkRepository.existsById(id)) {
+            return ResponseEntity.notFound().build(); // Return 404 if not found
+        }
+        // Delete the perk
+        perkRepository.deleteById(id);
+        return ResponseEntity.noContent().build(); // Return 204 No Content after successful deletion
     }
 
     @GetMapping("/uniqueMemberships")

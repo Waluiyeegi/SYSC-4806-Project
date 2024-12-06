@@ -28,6 +28,10 @@
 
   $: ({ loggedIn, username } = get(authState));
 
+
+  // function handleDeletePerk(event){
+  //     perks = perks.filter(perk => perk.id !== event.detail.id);
+  // }
   $: {
       fetchPerksByMembership(selectedMemberships);
   }
@@ -40,11 +44,20 @@
       fetchPerksByProducts(selectedProducts);
   }
 
-
   async function fetchPerks() {
-      // Fetch perks from the backend (replace with actual API if needed)
-      const response = await fetch(`${API_URL}/api/perks`);
-      perks = await response.json();
+      try {
+          const response = await fetch(`${API_URL}/api/perks`);
+          perks = await response.json();
+          console.log("Fetched perks:", perks);
+      } catch (error) {
+          console.error("Error fetching perks:", error);
+      }
+  }
+
+  function handleDelete(event) {
+      const deletedId = event.detail; // Get the ID of the deleted perk
+      perks = perks.filter(perk => perk.id !== deletedId); // Remove the deleted perk
+      console.log("Updated perks after delete:", perks); // Debugging log
   }
 
   onMount(fetchPerks);
@@ -113,7 +126,6 @@
           console.error("Error fetching unique products:", error);
       }
   }
-
   async function fetchPerksByProducts(products) {
       try {
           if (products.length === 0) {
@@ -137,7 +149,6 @@
       console.log("Membership options available:", memberships);
   }
 
-
   async function fetchPerksByMembership(memberships) {
       try {
           if (memberships.length === 0) {
@@ -154,13 +165,10 @@
       }
   }
 
-
-
-
   function toggleGeographicDropdown() {
       isGeographicDropdownOpen = !isGeographicDropdownOpen;
   }
-
+  
   function toggleMembershipDropdown() {
       isMembershipDropdownOpen = !isMembershipDropdownOpen;
   }
@@ -286,7 +294,7 @@ onMount(() => {
                 <div class="perk-list">
                     {#if perks.length > 0}
                         {#each perks as perk (perk.id)}
-                            <Perk {perk} />
+                            <Perk {perk} on:delete={handleDelete} />
                         {/each}
                     {:else}
                         <p>No perks found for the selected memberships.</p>
@@ -438,7 +446,6 @@ onMount(() => {
             grid-template-columns: 1fr;
         }
     }
-
     /* Dropdown and filter section */
     .dropdown-label {
         cursor: pointer;
@@ -488,5 +495,4 @@ onMount(() => {
     .dropdown-label:hover {
         background-color: #f0f0f0;
     }
-
 </style>
