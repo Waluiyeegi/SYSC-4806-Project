@@ -8,19 +8,15 @@
 
   let perks = [];
   let searchQuery = "";
-  let selectedGeographicAreas = [];
-  let geographicAreas = [];
+  let selectedGeographicAreas = []; // Initialize as an empty array
+  let geographicAreas = ["Canada", "USA", "Europe"]; //Placeholder
   let selectAllGeographicAreas = false;
   let isGeographicDropdownOpen = false;
+
 
   let memberships = []; // Placeholder
   let selectedMemberships = [];
   let isMembershipDropdownOpen = false;
-
-  let products = []; // List of available products
-  let selectedProducts = []; // Currently selected products
-  let isProductDropdownOpen = false; // Dropdown visibility state
-
 
   // Subscribe to authState
   let { loggedIn, username } = get(authState);
@@ -31,9 +27,6 @@
       fetchPerksByMembership(selectedMemberships);
   }
 
-  $: {
-      fetchPerksByProducts(selectedProducts);
-  }
 
 
   async function fetchPerks() {
@@ -47,46 +40,17 @@
       fetchUniqueMemberships();
   });
 
-  $: {
-      fetchPerksByGeographicArea(selectedGeographicAreas);
-  }
-
-
-  async function fetchUniqueGeographicAreas() {
-      try {
-          const response = await fetch(`${API_URL}/api/perks/uniqueGeographicAreas`);
-          geographicAreas = await response.json();
-          console.log("Fetched geographic areas:", geographicAreas);
-      } catch (error) {
-          console.error("Error fetching geographic areas:", error);
-      }
-  }
-
-  async function fetchPerksByGeographicArea(areas) {
-      try {
-          if (areas.length === 0) {
-              // Fetch all perks if no areas are selected
-              const response = await fetch(`${API_URL}/api/perks`);
-              perks = await response.json();
-          } else {
-              // Fetch perks for all selected areas
-              const response = await fetch(
-                  `${API_URL}/api/perks/geographicArea?${areas.map(a => `geographicAreas=${encodeURIComponent(a)}`).join('&')}`
-              );
-              perks = await response.json();
-          }
-      } catch (error) {
-          console.error("Error fetching perks by geographic area:", error);
-      }
-  }
-
 
   function handleSelectAllGeographicAreas() {
       if (selectAllGeographicAreas) {
-          selectedGeographicAreas = [...geographicAreas];
+          selectedGeographicAreas = [...geographicAreas]; // Select all areas
       } else {
-          selectedGeographicAreas = [];
+          selectedGeographicAreas = []; // Deselect all areas
       }
+  }
+
+  function toggleGeographicDropdown() {
+      isGeographicDropdownOpen = !isGeographicDropdownOpen; // Toggles dropdown
   }
 
   async function fetchUniqueMemberships() {
@@ -98,47 +62,21 @@
           console.error("Error fetching unique memberships:", error);
       }
   }
-
-  async function fetchUniqueProducts() {
-      try {
-          const response = await fetch(`${API_URL}/api/perks/uniqueProducts`);
-          products = await response.json();
-          console.log("Fetched products:", products);
-      } catch (error) {
-          console.error("Error fetching unique products:", error);
-      }
-  }
-
-  async function fetchPerksByProducts(products) {
-      try {
-          if (products.length === 0) {
-              const response = await fetch(`${API_URL}/api/perks`);
-              perks = await response.json();
-          } else {
-              const response = await fetch(
-                  `${API_URL}/api/perks/product?${products
-                      .map(p => `products=${encodeURIComponent(p)}`)
-                      .join("&")}`
-              );
-              perks = await response.json();
-          }
-      } catch (error) {
-          console.error("Error fetching perks by products:", error);
-      }
-  }
-
-
   $: {
       console.log("Membership options available:", memberships);
   }
 
 
+
+
   async function fetchPerksByMembership(memberships) {
       try {
           if (memberships.length === 0) {
+              // Fetch all perks if no memberships are selected
               const response = await fetch(`${API_URL}/api/perks`);
               perks = await response.json();
           } else {
+              // Fetch perks for all selected memberships
               const response = await fetch(
                   `${API_URL}/api/perks/membership?${memberships.map(m => `memberships=${encodeURIComponent(m)}`).join('&')}`
               );
@@ -152,32 +90,18 @@
 
 
 
-  function toggleGeographicDropdown() {
-      isGeographicDropdownOpen = !isGeographicDropdownOpen;
-  }
+
 
   function toggleMembershipDropdown() {
-      isMembershipDropdownOpen = !isMembershipDropdownOpen;
+      isMembershipDropdownOpen = !isMembershipDropdownOpen; // Toggles dropdown
   }
-
-  function toggleProductDropdown() {
-      isProductDropdownOpen = !isProductDropdownOpen;
-  }
-
-
-onMount(() => {
-    fetchUniqueGeographicAreas();
-    fetchUniqueProducts();
-    fetchUniqueMemberships();
-});
-
 
   function logOut() {
       authState.set({
           loggedIn: false,
           username: "",
       });
-      location.href = "/";
+      location.href = "/"; // Redirect to the homepage
   }
 
 </script>
@@ -233,30 +157,47 @@ onMount(() => {
                     </style>
 
                     <div id="geographic-area-filter">
-                    <label for="geographic-area-dropdown" class="dropdown-label" on:click={toggleGeographicDropdown}>
-                        Geographic Area:
-                        <span class="dropdown-arrow">{isGeographicDropdownOpen ? "▲" : "▼"}</span>
-                    </label>
+                        <label for="geographic-area-dropdown" class="dropdown-label" on:click={toggleGeographicDropdown}>
+                            Geographic Area:
+                            <span class="dropdown-arrow">{isGeographicDropdownOpen ? "▲" : "▼"}</span>
+                        </label>
 
-                    {#if isGeographicDropdownOpen}
-                        <div class="geographic-checkbox-group">
-                            {#each geographicAreas as area}
+                        {#if isGeographicDropdownOpen}
+                            <div class="geographic-checkbox-group">
+                                <!-- "All" Checkbox -->
                                 <div>
                                     <input
                                             type="checkbox"
-                                            id="geographic-{area}"
-                                            value={area}
-                                            bind:group={selectedGeographicAreas}
+                                            id="geographic-all"
+                                            bind:checked={selectAllGeographicAreas}
+                                            on:change={handleSelectAllGeographicAreas}
                                     />
-                                    <label for="geographic-{area}">{area}</label>
+                                    <label for="geographic-all">All</label>
                                 </div>
-                            {/each}
-                        </div>
-                    {/if}
-                </div>
+
+                                <!-- Individual Checkboxes -->
+                                {#each geographicAreas as area}
+                                    <div>
+                                        <input
+                                                type="checkbox"
+                                                id="geographic-{area}"
+                                                value={area}
+                                                bind:group={selectedGeographicAreas}
+                                        />
+                                        <label for="geographic-{area}">{area}</label>
+                                    </div>
+                                {/each}
+                            </div>
+                        {/if}
+                    </div>
 
 
                     <style>
+                        /* Geographic Area Filter Styles */
+                        #geographic-area-filter {
+                            margin-bottom: 20px;
+                        }
+
                         .dropdown-label {
                             cursor: pointer;
                             font-weight: bold;
@@ -273,10 +214,6 @@ onMount(() => {
                         .dropdown-arrow {
                             font-size: 14px;
                             color: #888;
-                        }
-
-                        #geographic-area-filter {
-                            margin-bottom: 20px;
                         }
 
                         .geographic-checkbox-group {
@@ -391,98 +328,7 @@ onMount(() => {
                     </style>
 
 
-                    <div id="product-filter">
-                        <label
-                                for="product-dropdown"
-                                class="dropdown-label"
-                                on:click={toggleProductDropdown}
-                        >
-                            Products:
-                            <span class="dropdown-arrow">{isProductDropdownOpen ? "▲" : "▼"}</span>
-                        </label>
 
-                        {#if isProductDropdownOpen}
-                            <div class="product-checkbox-group">
-                                {#each products as product}
-                                    <div>
-                                        <input
-                                                type="checkbox"
-                                                id="product-{product}"
-                                                value={product}
-                                                bind:group={selectedProducts}
-                                        />
-                                        <label for="product-{product}">{product}</label>
-                                    </div>
-                                {/each}
-                            </div>
-                        {/if}
-                    </div>
-
-                    <style>
-                        .dropdown-label {
-                            cursor: pointer;
-                            font-weight: bold;
-                            display: flex;
-                            justify-content: space-between;
-                            align-items: center;
-                            padding: 10px;
-                            border: 1px solid #ccc;
-                            background-color: #fff;
-                            border-radius: 5px;
-                            user-select: none;
-                        }
-
-                        .dropdown-label:hover {
-                            background-color: #f0f0f0;
-                        }
-
-                        .dropdown-arrow {
-                            font-size: 14px;
-                            color: #888;
-                        }
-
-                        .product-checkbox-group {
-                            border: 1px solid #ccc;
-                            background-color: #fff;
-                            border-radius: 5px;
-                            margin-top: 5px;
-                            padding: 10px;
-                            display: flex;
-                            flex-direction: column;
-                            max-height: 150px; /* Ensure a fixed height for scrolling */
-                            overflow-y: auto; /* Enable scrolling when content overflows */
-                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                        }
-
-                        /* Optional: Add a scrollbar style for better visuals */
-                        .product-checkbox-group::-webkit-scrollbar {
-                            width: 8px;
-                        }
-
-                        .product-checkbox-group::-webkit-scrollbar-thumb {
-                            background-color: #ccc;
-                            border-radius: 4px;
-                        }
-
-                        .product-checkbox-group::-webkit-scrollbar-thumb:hover {
-                            background-color: #aaa;
-                        }
-
-                        .product-checkbox-group div {
-                            display: flex;
-                            align-items: center;
-                            margin-bottom: 5px;
-                        }
-
-                        input[type="checkbox"] {
-                            margin-right: 8px;
-                        }
-
-                        label {
-                            font-size: 14px;
-                            color: #333;
-                        }
-                    </style>
 
                 </div>
             <!--{/if}-->
