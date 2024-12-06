@@ -12,8 +12,6 @@
   let geographicAreas = ["Canada", "USA", "Europe"]; //Placeholder
   let selectAllGeographicAreas = false;
   let isGeographicDropdownOpen = false;
-
-
   let memberships = []; // Placeholder
   let selectedMemberships = [];
   let isMembershipDropdownOpen = false;
@@ -30,8 +28,6 @@
   $: {
       fetchPerksByMembership(selectedMemberships);
   }
-
-
 
   async function fetchPerks() {
       try {
@@ -80,9 +76,6 @@
       console.log("Membership options available:", memberships);
   }
 
-
-
-
   async function fetchPerksByMembership(memberships) {
       try {
           if (memberships.length === 0) {
@@ -100,11 +93,6 @@
           console.error("Error fetching perks by membership:", error);
       }
   }
-
-
-
-
-
 
   function toggleMembershipDropdown() {
       isMembershipDropdownOpen = !isMembershipDropdownOpen; // Toggles dropdown
@@ -340,10 +328,6 @@
                             background-color: #f0f0f0;
                         }
                     </style>
-
-
-
-
                 </div>
             <!--{/if}-->
             <div class="perk-list-section">

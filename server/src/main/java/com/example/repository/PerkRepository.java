@@ -16,6 +16,3 @@ public interface PerkRepository extends CrudRepository<Perk, Long> {
     @Query("SELECT DISTINCT p.membership FROM Perk p")
     List<String> findDistinctMemberships();
 }
-
-
-

@@ -55,9 +55,6 @@ public class PerkManagerController {
         return perks;
     }
 
-
-
-
     @GetMapping
     public List<Perk> getPerks() {
         return (List<Perk>) perkRepository.findAll();
@@ -83,6 +80,5 @@ public class PerkManagerController {
     public List<String> getUniqueMemberships() {
         return perkRepository.findDistinctMemberships();
     }
-
 
 }
